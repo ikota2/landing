@@ -36,6 +36,7 @@
             <option value="doctor">Врач</option>
             <option value="copywriter">Копирайтер</option>
             <option value="designer">Графический дизайнер</option>
+            <option value="cat">Кот</option>
         </select>
         <input type="text" id="name" bind:value={name} placeholder="Имя" required />
         <input type="email" id="email" bind:value={email} placeholder="Email" required />
