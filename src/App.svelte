@@ -1,5 +1,4 @@
 <script>
-  import svelteLogo from './assets/svelte.svg'
   import viteLogo from '/vite.svg'
   import Card from './lib/Card.svelte';
   import Info from './lib/Info.svelte';
@@ -15,7 +14,7 @@
       <li><a href="#info">Информация</a></li>
       <li><a href="#vacancies">Вакансии</a></li>
       <li><a href="#sendCv">Отправить CV</a></li>
-      <li><a href="#">Contact</a></li>
+      <li><a href="#contacts">Контакты</a></li>
     </ul>
   </aside>
   <main class="content">
@@ -47,6 +46,9 @@
       </div>
     </div>
   </main>
+<footer id="contacts" class="content">
+  <h2>Контакты</h2>
+</footer>
 </body>
 
 <style>
