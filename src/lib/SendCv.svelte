@@ -1,87 +1,79 @@
 <script>
-	import { createEventDispatcher } from 'svelte';
-
-    let firstName = '';
-    let lastName = '';
+    let name = '';
+    let email = '';
+    let telegram = '';
     let position = '';
-    let file = null;
-    let emailSent = false;
-    const dispatch = createEventDispatcher();
+    let experience = '';
 
-	function handleFileChange(event) {
-		file = event.target.files[0];
-	}
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        const formData = { name, email, telegram, experience };
 
-	async function handleSubmit(event) {
-		event.preventDefault();
-		const formData = new FormData();
-		formData.append('firstName', firstName);
-		formData.append('lastName', lastName);
-		formData.append('position', position);
-		formData.append('file', file);
+        try {
+            const response = await fetch('http://localhost:3000/send-cv', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            });
 
-		// Здесь мы отправляем данные формы на сервер
-		// На серверной стороне (например, с помощью Node.js), вы можете настроить отправку письма с использованием nodemailer
-
-		const response = await fetch('http://localhost:3000/send-email', {
-			method: 'POST',
-			body: formData
-		});
-
-        if (response.ok) {
-            emailSent = true;
-            dispatch('emailsent');
-        } else {
-            console.error('Error sending email');
+            if (response.ok) {
+                alert('Form submitted successfully');
+            } else {
+                alert('Error submitting form');
+            }
+        } catch (error) {
+            alert('Error submitting form');
         }
-	}
+    };
 </script>
 
 <div>
     <form on:submit|preventDefault={handleSubmit}>
-        <label>
-            Имя:
-            <input type="text" bind:value={firstName} required>
-        </label>
-
-        <label>
-            Фамилия:
-            <input type="text" bind:value={lastName} required>
-        </label>
-
         <select bind:value={position} required>
             <option value="" disabled selected>Выберите должность</option>
             <option value="doctor">Врач</option>
             <option value="copywriter">Копирайтер</option>
             <option value="designer">Графический дизайнер</option>
         </select>
+<!--        <div class="input_wrapper">-->
+            <input type="text" id="name" bind:value={name} placeholder="Имя" required />
+<!--        </div>-->
 
-        <label>
-            Прикрепите свой CV в формате .pdf:
-            <input type="file" accept=".pdf" on:change={handleFileChange} required>
-        </label>
+<!--        <div class="input_wrapper">-->
+            <input type="email" id="email" bind:value={email} placeholder="Email" required />
+<!--        </div>-->
+
+<!--        <div class="input_wrapper">-->
+            <input type="text" id="telegram" placeholder="Telegram (optional)" bind:value={telegram} />
+<!--        </div>-->
+
+<!--        <div class="input_wrapper">-->
+            <textarea id="experience" bind:value={experience} placeholder="Опыт" required></textarea>
+<!--        </div>-->
+<!--        <label>-->
+<!--            Прикрепите свой CV в формате .pdf:-->
+<!--            <input type="file" accept=".pdf" on:change={handleFileChange} required>-->
+<!--        </label>-->
 
         <button type="submit">Отправить</button>
     </form>
-
-    {#if emailSent}
-        <p>Спасибо! Резюме отправлено</p>
-    {/if}
 </div>
 
 <style>
 	form {
-		display: flex;
-		flex-direction: column;
+      display: flex;
+      flex-direction: column;
+      justify-content: start;
+      align-items: start;
 	}
-	label {
-		margin-bottom: 1rem;
-	}
-	input, select {
+	input, select, textarea {
+        display: block;
 		margin-top: 0.5rem;
 	}
     select {
-			width: 200px;
+      width: auto;
     }
 	button {
       cursor: pointer;
