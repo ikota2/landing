@@ -3,52 +3,68 @@
   import Card from './lib/Card.svelte';
   import Info from './lib/Info.svelte';
   import SendCv from './lib/SendCv.svelte';
+
+  function scrollToSection(event) {
+    event.preventDefault();
+    const targetId = event.target.getAttribute('href');
+    const targetElement = document.querySelector(targetId);
+    if (targetElement) {
+      targetElement.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
 </script>
 
 <body>
-  <aside class="sidebar">
-    <div class="logo_container">
-      <img src={viteLogo} alt="logo">
+    <div class="sidebar">
+      <div class="logo_container">
+        <img src={viteLogo} alt="logo">
+      </div>
+      <ul>
+        <li><a href="#info" on:click={scrollToSection}>Информация</a></li>
+        <li><a href="#vacancies" on:click={scrollToSection}>Вакансии</a></li>
+        <li><a href="#sendCv" on:click={scrollToSection}>Отправить CV</a></li>
+        <li><a href="#contacts" on:click={scrollToSection}>Контакты</a></li>
+      </ul>
     </div>
-    <ul>
-      <li><a href="#info">Информация</a></li>
-      <li><a href="#vacancies">Вакансии</a></li>
-      <li><a href="#sendCv">Отправить CV</a></li>
-      <li><a href="#contacts">Контакты</a></li>
-    </ul>
-  </aside>
-  <main class="content">
-    <Info id="info"/>
-    <div class="vacancies_container" id="vacancies" >
-      <h2>Вакансии</h2>
-      <div class="vacancies">
-        <Card
-          name="Врач"
-          description="Лечит людей"
-          img="https://via.placeholder.com/100"
-        />
-        <Card
-          name="Копирайтер"
-          description="Пишет тексты"
-          img="https://via.placeholder.com/100"
-        />
-        <Card
-          name="Графический дизайнер"
-          description="Рисует картинки"
-          img="https://via.placeholder.com/100"
-        />
+    <div class="main">
+      <Info id="info"/>
+      <div class="vacancies_container" id="vacancies" >
+        <h2>Вакансии</h2>
+        <div class="vacancies">
+          <Card
+                  name="Врач"
+                  description="Лечит людей"
+                  img="https://via.placeholder.com/100"
+          />
+          <Card
+                  name="Копирайтер"
+                  description="Пишет тексты"
+                  img="https://via.placeholder.com/100"
+          />
+          <Card
+                  name="Графический дизайнер"
+                  description="Рисует картинки"
+                  img="https://via.placeholder.com/100"
+          />
+          <Card
+                  name="Кот"
+                  description="Ест и спит"
+                  img="https://via.placeholder.com/100"
+          />
+        </div>
+      </div>
+      <div class="sendCv_container" id="sendCv">
+        <h2>Отправить CV</h2>
+        <div class="sendCv">
+          <SendCv />
+        </div>
+      </div>
+      <div id="contacts" class="contacts">
+        <h2>Контакты</h2>
+        <p>mymail@mail.ru</p>
+        <p>telegram: @takoyto</p>
       </div>
     </div>
-    <div class="sendCv_container" id="sendCv">
-      <h2>Отправить CV</h2>
-      <div class="sendCv">
-        <SendCv />
-      </div>
-    </div>
-  </main>
-<footer id="contacts" class="content">
-  <h2>Контакты</h2>
-</footer>
 </body>
 
 <style>
@@ -57,33 +73,26 @@
     padding: 0;
     box-sizing: border-box;
   }
-
-  body {
-    font-family: Helvetica, sans-serif;
-    background-image: url('assets/banner-1.jpg');
-    height: 100vh;
-  }
-
   .sidebar {
+    width: 180px;
+    height: 100vh;
+    background-color: #333;
     position: fixed;
     top: 0;
     left: 0;
-    width: 180px;
-    height: 100%;
-    background-color: #333;
-    color: #fff;
-    overflow: auto;
+    text-align: center;
   }
-
+  .logo_container {
+    margin-top: 20px;
+    text-align: center;
+  }
   .sidebar ul {
     list-style-type: none;
     padding: 20px;
   }
-
   .sidebar ul li {
     margin-bottom: 10px;
   }
-
   .sidebar ul li a {
     color: #fff;
     text-decoration: none;
@@ -93,19 +102,14 @@
     border-radius: 5px;
     text-align: center;
   }
-
   .sidebar ul li a:hover {
     background-color: #555;
   }
-
-  .logo_container {
-    margin-top: 20px;
-    text-align: center;
-  }
-
-  .content {
+  .main {
     margin-left: 180px;
-    padding: 20px;
+  }
+  .vacancies_container, .sendCv_container, .contacts {
+    margin-top: 200px;
   }
 
   .vacancies {
@@ -117,12 +121,12 @@
   }
 
   @media (max-width: 1200px) {
-    .content {
-      margin-left: 80px; /* Adjust for smaller screens */
+    .main {
+      margin-left: 180px;
     }
 
     .sidebar {
-      width: 80px;
+      width: 180px;
     }
 
     .sidebar ul li a {
@@ -132,12 +136,12 @@
   }
 
   @media (max-width: 992px) {
-    .content {
-      margin-left: 70px;
+    .main {
+      margin-left: 180px;
     }
 
     .sidebar {
-      width: 70px;
+      width: 180px;
     }
 
     .sidebar ul li a {
@@ -147,12 +151,12 @@
   }
 
   @media (max-width: 768px) {
-    .content {
-      margin-left: 60px;
+    .main {
+      margin-left: 0;
     }
 
     .sidebar {
-      width: 60px;
+      display: none;
     }
 
     .sidebar ul li a {
@@ -162,12 +166,12 @@
   }
 
   @media (max-width: 576px) {
-    .content {
-      margin-left: 50px;
+    .main {
+      margin-left: 0;
     }
 
     .sidebar {
-      width: 50px;
+      display: none;
     }
 
     .sidebar ul li a {
@@ -177,12 +181,12 @@
   }
 
   @media (max-width: 480px) {
-    .content {
-      margin-left: 45px;
+    .main {
+      margin-left: 0;
     }
 
     .sidebar {
-      width: 45px;
+      display: none;
     }
 
     .sidebar ul li a {
@@ -192,17 +196,12 @@
   }
 
   @media (max-width: 360px) {
-    .content {
-      margin-left: 40px;
-    }
-
-    .sidebar {
-      width: 40px;
-    }
-
     .sidebar ul li a {
       padding: 3px;
       font-size: 9px;
     }
   }
+
+
+
 </style>

@@ -31,32 +31,16 @@
 
 <div>
     <form on:submit|preventDefault={handleSubmit}>
-        <select bind:value={position} required>
+        <select bind:value={position} class="custom-select" required>
             <option value="" disabled selected>Выберите должность</option>
             <option value="doctor">Врач</option>
             <option value="copywriter">Копирайтер</option>
             <option value="designer">Графический дизайнер</option>
         </select>
-<!--        <div class="input_wrapper">-->
-            <input type="text" id="name" bind:value={name} placeholder="Имя" required />
-<!--        </div>-->
-
-<!--        <div class="input_wrapper">-->
-            <input type="email" id="email" bind:value={email} placeholder="Email" required />
-<!--        </div>-->
-
-<!--        <div class="input_wrapper">-->
-            <input type="text" id="telegram" placeholder="Telegram (optional)" bind:value={telegram} />
-<!--        </div>-->
-
-<!--        <div class="input_wrapper">-->
-            <textarea id="experience" bind:value={experience} placeholder="Опыт" required></textarea>
-<!--        </div>-->
-<!--        <label>-->
-<!--            Прикрепите свой CV в формате .pdf:-->
-<!--            <input type="file" accept=".pdf" on:change={handleFileChange} required>-->
-<!--        </label>-->
-
+        <input type="text" id="name" bind:value={name} placeholder="Имя" required />
+        <input type="email" id="email" bind:value={email} placeholder="Email" required />
+        <input type="text" id="telegram" placeholder="Telegram (optional)" bind:value={telegram} />
+        <textarea id="experience" bind:value={experience} placeholder="Опыт" required></textarea>
         <button type="submit">Отправить</button>
     </form>
 </div>
@@ -65,12 +49,13 @@
 	form {
       display: flex;
       flex-direction: column;
-      justify-content: start;
-      align-items: start;
+      justify-content: center;
+      align-items: center;
 	}
-	input, select, textarea {
-        display: block;
-		margin-top: 0.5rem;
+	input, select, textarea, .custom-select {
+      display: block;
+      margin-top: 0.5rem;
+      width: 15rem;
 	}
     select {
       width: auto;
