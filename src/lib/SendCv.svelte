@@ -7,7 +7,7 @@
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        const formData = { name, email, telegram, experience };
+        const formData = { name, email, telegram, position, experience };
 
         try {
             const response = await fetch('http://localhost:3000/send-cv', {
