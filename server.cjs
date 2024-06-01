@@ -11,7 +11,7 @@ app.use(express.static(path.join(__dirname, 'dist')));
 
 const dataFilePath = path.join(__dirname, 'data.json');
 
-app.post('/send-cv', (req, res) => {
+app.post('/api/send-cv', (req, res) => {
 	const { name, email, telegram, experience, position } = req.body;
 	const newCv = {
 		id: Date.now().toString(),
@@ -52,7 +52,7 @@ app.post('/send-cv', (req, res) => {
 	});
 });
 
-app.get('/get-data', (req, res) => {
+app.get('/api/get-data', (req, res) => {
 	fs.readFile(dataFilePath, (err, data) => {
 		if (err) {
 			console.error('Error reading file:', err);
@@ -63,7 +63,7 @@ app.get('/get-data', (req, res) => {
 	});
 });
 
-app.delete('/delete-cv/:id', (req, res) => {
+app.delete('/api/delete-cv/:id', (req, res) => {
 	const { id } = req.params;
 
 	fs.readFile(dataFilePath, (err, data) => {

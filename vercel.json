@@ -6,7 +6,7 @@
       "use": "@vercel/node"
     },
     {
-      "src": "package.json",
+      "src": "vite.config.js",
       "use": "@vercel/static-build",
       "config": {
         "distDir": "dist"
@@ -15,8 +15,8 @@
   ],
   "routes": [
     {
-      "src": "/send-cv",
-      "dest": "/server.cjs"
+      "src": "/api/(.*)",
+      "dest": "server.cjs"
     },
     {
       "src": "/assets/(.*)",
@@ -24,7 +24,7 @@
     },
     {
       "src": "/(.*)",
-      "dest": "/dist/$1"
+      "dest": "/dist/index.html"
     }
   ]
 }

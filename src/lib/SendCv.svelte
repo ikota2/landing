@@ -10,7 +10,7 @@
         const formData = { name, email, telegram, position, experience };
 
         try {
-            const response = await fetch('http://localhost:3000/send-cv', {
+            const response = await fetch(`/api/send-cv`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
