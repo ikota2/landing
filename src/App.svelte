@@ -3,7 +3,6 @@
   import Card from './lib/Card.svelte';
   import Info from './lib/Info.svelte';
   import SendCv from './lib/SendCv.svelte';
-  import CvTable from './lib/CvTable.svelte';
 
   function scrollToSection(event) {
     event.preventDefault();
@@ -59,10 +58,6 @@
         <div class="sendCv">
           <SendCv />
         </div>
-      </div>
-      <div>
-        <h2>table</h2>
-        <CvTable />
       </div>
       <div id="contacts" class="contacts">
         <h2>Контакты</h2>
