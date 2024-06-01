@@ -12,7 +12,7 @@
         const formData = { name, email, telegram, position, experience };
 
         try {
-            const response = await fetch(`${apiBaseUrl}/api/send-cv`, {
+            const response = await fetch(`${apiBaseUrl}/send-cv`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
