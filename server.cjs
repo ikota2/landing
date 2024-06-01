@@ -27,8 +27,8 @@ app.post('/api/send-cv', (req, res) => {
 			// File does not exist, create it
 			return fs.writeFile(dataFilePath, JSON.stringify([newCv], null, 2), (err) => {
 				if (err) {
-					console.error('Error writing file:', err);
-					return res.status(500).send('Error saving data');
+					console.error('Error writing file:', err.name, err.message);
+					return res.status(500).send(err.name + ' ' + err.message);
 				}
 				return res.status(200).send('Form submitted successfully');
 			});
