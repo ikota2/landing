@@ -9,15 +9,6 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'dist')));
 
 app.post('/send-cv', (req, res) => {
-	const { name, email, telegram, experience, position } = req.body;
-
-	console.log('Form Data Received:');
-	console.log(`Name: ${name}`);
-	console.log(`Email: ${email}`);
-	console.log(`Telegram: ${telegram}`);
-	console.log(`Experience: ${experience}`);
-	console.log(`Position: ${position}`);
-
 	res.status(200).send('Form submitted successfully');
 });
 
