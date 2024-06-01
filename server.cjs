@@ -3,13 +3,16 @@ const cors = require('cors');
 const app = express();
 const path = require('path');
 const fs = require('fs');
+const os = require('os');
 const port = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'dist')));
 
-const dataFilePath = path.join(__dirname, 'data.json');
+// const dataFilePath = path.join(__dirname, 'data.json');
+const dataFilePath = path.join(os.tmpdir(), 'data.json');
+
 
 app.post('/api/send-cv', (req, res) => {
 	const { name, email, telegram, experience, position } = req.body;
