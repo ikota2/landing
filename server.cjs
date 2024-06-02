@@ -7,6 +7,10 @@ const path = require('path');
 const port = process.env.PORT || 3000;
 
 const uri = process.env.MONGODB_URI;
+if (!uri) {
+	console.error('MONGODB_URI environment variable not set');
+	process.exit(1);
+}
 
 const client = new MongoClient(uri, {
 	serverApi: {
