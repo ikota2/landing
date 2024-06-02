@@ -1,20 +1,40 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
+const { MongoClient, ServerApiVersion } = require('mongodb');
 const app = express();
 const path = require('path');
-const fs = require('fs');
-const os = require('os');
 const port = process.env.PORT || 3000;
+
+const uri = process.env.MONGODB_URI;
+
+const client = new MongoClient(uri, {
+	serverApi: {
+		version: ServerApiVersion.v1,
+		strict: true,
+		deprecationErrors: true,
+	}
+});
 
 app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'dist')));
 
-// const dataFilePath = path.join(__dirname, 'data.json');
-const dataFilePath = path.join(os.tmpdir(), 'data.json');
+let collection;
 
+async function connectToDatabase() {
+	try {
+		await client.connect();
+		console.log("Connected to MongoDB!");
+		const database = client.db('db_cvs');
+		collection = database.collection('collectionOfCvs');
+	} catch (err) {
+		console.error('Failed to connect to MongoDB', err);
+		process.exit(1);
+	}
+}
 
-app.post('/api/send-cv', (req, res) => {
+app.post('/api/send-cv', async (req, res) => {
 	const { name, email, telegram, experience, position } = req.body;
 	const newCv = {
 		id: Date.now().toString(),
@@ -25,73 +45,43 @@ app.post('/api/send-cv', (req, res) => {
 		position
 	};
 
-	fs.readFile(dataFilePath, (err, data) => {
-		if (err && err.code === 'ENOENT') {
-			// File does not exist, create it
-			return fs.writeFile(dataFilePath, JSON.stringify([newCv], null, 2), (err) => {
-				if (err) {
-					console.error('Error writing file:', err.name, err.message);
-					return res.status(500).send(err.name + ' ' + err.message);
-				}
-				return res.status(200).send('Form submitted successfully');
-			});
-		}
-
-		if (err) {
-			console.error('Error reading file:', err);
-			return res.status(500).send('Error reading data');
-		}
-
-		const cvs = JSON.parse(data);
-		cvs.push(newCv);
-
-		fs.writeFile(dataFilePath, JSON.stringify(cvs, null, 2), (err) => {
-			if (err) {
-				console.error('Error writing file:', err);
-				return res.status(500).send('Error saving data');
-			}
-			return res.status(200).send('Form submitted successfully');
-		});
-	});
+	try {
+		await collection.insertOne(newCv);
+		res.status(200).send('Form submitted successfully');
+	} catch (err) {
+		console.error('Error saving data:', err);
+		res.status(500).send('Error saving data');
+	}
 });
 
-app.get('/api/get-data', (req, res) => {
-	fs.readFile(dataFilePath, (err, data) => {
-		if (err) {
-			console.error('Error reading file:', err);
-			return res.status(500).send('Error reading data');
-		}
-		const cvs = JSON.parse(data);
+app.get('/api/get-data', async (req, res) => {
+	try {
+		const cvs = await collection.find({}).toArray();
 		res.json(cvs);
-	});
+	} catch (err) {
+		console.error('Error reading data:', err);
+		res.status(500).send('Error reading data');
+	}
 });
 
-app.delete('/api/delete-cv/:id', (req, res) => {
+app.delete('/api/delete-cv/:id', async (req, res) => {
 	const { id } = req.params;
 
-	fs.readFile(dataFilePath, (err, data) => {
-		if (err) {
-			console.error('Error reading file:', err);
-			return res.status(500).send('Error reading data');
-		}
-
-		let cvs = JSON.parse(data);
-		cvs = cvs.filter(cv => cv.id !== id);
-
-		fs.writeFile(dataFilePath, JSON.stringify(cvs, null, 2), (err) => {
-			if (err) {
-				console.error('Error writing file:', err);
-				return res.status(500).send('Error saving data');
-			}
-			res.status(200).send('CV deleted successfully');
-		});
-	});
+	try {
+		await collection.deleteOne({ id });
+		res.status(200).send('CV deleted successfully');
+	} catch (err) {
+		console.error('Error deleting data:', err);
+		res.status(500).send('Error deleting data');
+	}
 });
 
 app.get('*', (req, res) => {
 	res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
 
-app.listen(port, () => {
-	console.log(`Server is running at http://localhost:${port}`);
-});
+connectToDatabase().then(() => {
+	app.listen(port, () => {
+		console.log(`Server is running at http://localhost:${port}`);
+	});
+}).catch(console.error);
