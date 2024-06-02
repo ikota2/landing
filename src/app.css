@@ -28,6 +28,10 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+	background-image: url('assets/banner-1.jpg');
+	background-position: center;
+	background-repeat: repeat;
+	background-color: #e1f8f1;
 }
 
 h1 {
