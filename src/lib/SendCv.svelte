@@ -1,33 +1,35 @@
 <script>
-	import { apiBaseUrl } from '../config';
-
     let name = '';
     let email = '';
     let telegram = '';
     let position = '';
     let experience = '';
-
+    const siteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY;
+  
     const handleSubmit = async (event) => {
         event.preventDefault();
         const formData = { name, email, telegram, position, experience };
 
-        try {
-            const response = await fetch(`${apiBaseUrl}/api/send-cv`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(formData)
-            });
+        grecaptcha.ready(async () => {
+            formData.recaptchaToken = await grecaptcha.execute(siteKey, {action: 'submit'});
+            try {
+                const response = await fetch('/api/send-cv', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
 
-            if (response.ok) {
-                alert('Form submitted successfully');
-            } else {
+                if (response.ok) {
+                    alert('Form submitted successfully');
+                } else {
+                    alert('Error submitting form');
+                }
+            } catch (error) {
                 alert('Error submitting form');
             }
-        } catch (error) {
-            alert('Error submitting form');
-        }
+        });
     };
 </script>
 
@@ -44,6 +46,7 @@
         <input type="email" id="email" bind:value={email} placeholder="Email" required />
         <input type="text" id="telegram" placeholder="Telegram (optional)" bind:value={telegram} />
         <textarea id="experience" bind:value={experience} placeholder="Опыт" required></textarea>
+        <div class="g-recaptcha" data-sitekey={siteKey}></div>
         <button type="submit">Отправить</button>
     </form>
 </div>
