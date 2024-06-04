@@ -7,8 +7,8 @@ const path = require('path');
 const port = process.env.PORT || 3000;
 
 const uri = process.env.MONGODB_URI;
-const secretKey = process.env.VITE_RECAPTCHA_SECRET_KEY;
-const siteKey = process.env.VITE_RECAPTCHA_SITE_KEY;
+const secretKey = '6LeeuvApAAAAAAYZp9KtXvU0iWQvOg676to0ySxZ';
+const siteKey = '6LeeuvApAAAAAO6K4_ETMGN7_9Gsx41gz2q93ewZ';
 
 if (!uri) {
 	console.error('MONGODB_URI environment variable not set');
