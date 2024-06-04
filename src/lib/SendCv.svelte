@@ -9,12 +9,6 @@
 
     const siteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY;
 
-    onMount(() => {
-        const script = document.createElement('script');
-        script.src = `https://www.google.com/recaptcha/enterprise.js?render=${siteKey}`;
-        script.async = true;
-        document.body.appendChild(script);
-    });
     const handleSubmit = async (event) => {
         event.preventDefault();
         const formData = { name, email, telegram, position, experience };
