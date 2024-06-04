@@ -4,8 +4,8 @@
     let telegram = '';
     let position = '';
     let experience = '';
-
     const siteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY;
+  
     const handleSubmit = async (event) => {
         event.preventDefault();
         const formData = { name, email, telegram, position, experience };
