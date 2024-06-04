@@ -1,0 +1,7 @@
+{
+  "event": {
+    "token": "TOKEN",
+    "siteKey": "your-enterprise-site-key",
+    "expectedAction": "submit"
+  }
+}

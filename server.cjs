@@ -8,6 +8,7 @@ const port = process.env.PORT || 3000;
 
 const uri = process.env.MONGODB_URI;
 const secretKey = process.env.VITE_RECAPTCHA_SECRET_KEY;
+const siteKey = process.env.VITE_RECAPTCHA_SITE_KEY;
 
 if (!uri) {
 	console.error('MONGODB_URI environment variable not set');
@@ -40,21 +41,29 @@ async function connectToDatabase() {
 	}
 }
 
+
 app.post('/api/send-cv', async (req, res) => {
 	const { name, email, telegram, experience, position, recaptchaToken } = req.body;
 
 	try {
-		const response = await fetch(`https://www.google.com/recaptcha/api/siteverify`, {
+		const verificationUrl = `https://recaptchaenterprise.googleapis.com/v1/projects/${siteKey}/assessments?key=${secretKey}`;
+		const response = await fetch(verificationUrl, {
 			method: 'POST',
 			headers: {
-				'Content-Type': 'application/x-www-form-urlencoded'
+				'Content-Type': 'application/json'
 			},
-			body: `secret=${secretKey}&response=${recaptchaToken}`
+			body: JSON.stringify({
+				event: {
+					token: recaptchaToken,
+					siteKey: siteKey,
+					expectedAction: 'submit'
+				}
+			})
 		});
 
 		const data = await response.json();
 
-		if (!data.success) {
+		if (!data.tokenProperties.valid) {
 			return res.status(400).json({ message: 'reCAPTCHA verification failed' });
 		}
 
