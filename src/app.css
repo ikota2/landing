@@ -24,14 +24,17 @@ a:hover {
 
 body {
   margin: 0;
-  display: flex;
+  /*display: flex;*/
   place-items: center;
   min-width: 320px;
-  min-height: 100vh;
+  /*min-height: 100vh;*/
+  height: 100vh;
 	background-image: url('assets/banner-1.jpg');
 	background-position: center;
 	background-repeat: repeat;
 	background-color: #e1f8f1;
+  display: grid;
+  grid-template-rows: auto 1fr;
 }
 
 h1 {
