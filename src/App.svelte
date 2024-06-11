@@ -1,12 +1,13 @@
 <script>
   import viteLogo from '/vite.svg';
   import Features from './lib/Features.svelte';
-  import RemoteJobs from './lib/Jobs.svelte';
   import Navigation from './lib/Navigation.svelte';
-
+  import {jobs} from './data/index.js';
+  import Job from './lib/Job.svelte';
+  import SendCv from './lib/SendCv.svelte';
 
   let activeSection = 'info';
-
+  const { remoteJobs, onsiteJobs } = jobs;
   function scrollToSection(sectionId) {
     activeSection = sectionId;
     const targetElement = document.getElementById(sectionId);
@@ -44,14 +45,17 @@
         </div>
         <Features />
       </section>
-      <section id="remote">
-        <RemoteJobs />
+      <section id="remote" class="jobs">
+        <Job title="Удаленная работа" jobs={remoteJobs} />
       </section>
-      <section id="onsite">
-        hello onsite
+      <section id="onsite" class="jobs">
+        <Job title="Работа на месте" jobs={onsiteJobs} />
       </section>
       <section id="contacts">
-        hello contacts
+          <div class="contact">
+             <h2>Отправить резюме</h2>
+            <SendCv />
+          </div>
       </section>
     </main>
     <footer>hello footer</footer>
@@ -100,7 +104,18 @@
     line-height: 1.5;
     font-size: 1.3rem;
   }
-
+  .jobs {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  .contact h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+    color: #333;
+  }
   @media (max-width: 1024px) and (min-width: 769px) {
     .company-title {
       font-size: 24px;
