@@ -1,13 +1,15 @@
 <script>
-  import viteLogo from '/vite.svg'
-  import Card from './lib/Card.svelte';
-  import Info from './lib/Info.svelte';
-  import SendCv from './lib/SendCv.svelte';
+  import viteLogo from '/vite.svg';
+  import Features from './lib/Features.svelte';
+  import RemoteJobs from './lib/Jobs.svelte';
+  import Navigation from './lib/Navigation.svelte';
 
-  function scrollToSection(event) {
-    event.preventDefault();
-    const targetId = event.target.getAttribute('href');
-    const targetElement = document.querySelector(targetId);
+
+  let activeSection = 'info';
+
+  function scrollToSection(sectionId) {
+    activeSection = sectionId;
+    const targetElement = document.getElementById(sectionId);
     if (targetElement) {
       targetElement.scrollIntoView({ behavior: 'smooth' });
     }
@@ -15,56 +17,44 @@
 </script>
 
 <body>
-    <div class="sidebar">
-      <div class="logo_container">
-        <img src={viteLogo} alt="logo">
-      </div>
-      <ul>
-        <li><a href="#info" on:click={scrollToSection}>Информация</a></li>
-        <li><a href="#vacancies" on:click={scrollToSection}>Вакансии</a></li>
-        <li><a href="#sendCv" on:click={scrollToSection}>Отправить CV</a></li>
-        <li><a href="#contacts" on:click={scrollToSection}>Контакты</a></li>
-      </ul>
-    </div>
-    <div class="main">
-      <Info id="info"/>
-      <div class="vacancies_container" id="vacancies" >
-        <h2>Вакансии</h2>
-        <div class="vacancies">
-          <Card
-                  name="Врач"
-                  description="Лечит людей"
-                  img="https://via.placeholder.com/100"
-          />
-          <Card
-                  name="Копирайтер"
-                  description="Пишет тексты"
-                  img="https://via.placeholder.com/100"
-          />
-          <Card
-                  name="Графический дизайнер"
-                  description="Рисует картинки"
-                  img="https://via.placeholder.com/100"
-          />
-          <Card
-                  name="Кот"
-                  description="Ест и спит"
-                  img="https://via.placeholder.com/100"
-          />
+    <header>
+      <div class="header-container">
+        <div class="company">
+          <img src={viteLogo} alt="logo" class="company-logo">
+          <p class="company-title">Ювента</p>
         </div>
+        <Navigation
+            scrollToSection={scrollToSection}
+            activeSection={activeSection}
+        />
       </div>
-      <div class="sendCv_container" id="sendCv">
-        <h2>Отправить CV</h2>
-        <div class="sendCv">
-          <SendCv />
+    </header>
+    <main>
+      <section id="info">
+        <div class="info">
+          <h2>Кто мы?</h2>
+          <p>
+            Кадровое агентство «Ювента» — ваш надежный партнер в поиске профессионалов и создании успешных команд.
+            Мы специализируемся на подборе персонала для различных отраслей, используя современные методики и индивидуальный подход к каждому клиенту.
+            Наша цель — обеспечить ваш бизнес талантливыми и мотивированными сотрудниками, способными достигать высоких результатов.
+          </p>
+          <p>
+            С «Экспертус» вы всегда на шаг впереди в вопросах кадрового обеспечения!
+          </p>
         </div>
-      </div>
-      <div id="contacts" class="contacts">
-        <h2>Контакты</h2>
-        <p>mymail@mail.ru</p>
-        <p>telegram: @takoyto</p>
-      </div>
-    </div>
+        <Features />
+      </section>
+      <section id="remote">
+        <RemoteJobs />
+      </section>
+      <section id="onsite">
+        hello onsite
+      </section>
+      <section id="contacts">
+        hello contacts
+      </section>
+    </main>
+    <footer>hello footer</footer>
 </body>
 
 <style>
@@ -73,135 +63,59 @@
     padding: 0;
     box-sizing: border-box;
   }
-  .sidebar {
-    width: 180px;
-    height: 100vh;
-    background-color: #333;
+  header {
     position: fixed;
     top: 0;
     left: 0;
-    text-align: center;
-  }
-  .logo_container {
-    margin-top: 20px;
-    text-align: center;
-  }
-  .sidebar ul {
-    list-style-type: none;
-    padding: 20px;
-  }
-  .sidebar ul li {
-    margin-bottom: 10px;
-  }
-  .sidebar ul li a {
+    width: 100%;
+    background-color: rgba(216, 27, 66, 0.94);
     color: #fff;
-    text-decoration: none;
-    display: block;
-    padding: 10px;
-    background-color: #444;
-    border-radius: 5px;
     text-align: center;
+    padding: 5px 10px;
+    z-index: 2;
+    height: 5rem;
   }
-  .sidebar ul li a:hover {
-    background-color: #555;
-  }
-  .main {
-    margin-left: 180px;
-  }
-  .vacancies_container, .sendCv_container, .contacts {
-    margin-top: 200px;
-  }
-
-  .vacancies {
+  .header-container {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    gap: 20px;
-    flex-wrap: wrap;
+  }
+  .company {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+  }
+  .company-title {
+    font-size: 32px;
   }
 
-  @media (max-width: 1200px) {
-    .main {
-      margin-left: 180px;
-    }
-
-    .sidebar {
-      width: 180px;
-    }
-
-    .sidebar ul li a {
-      padding: 8px;
-      font-size: 14px;
-    }
+  section:not(:first-child) {
+    margin-top: 50px;
+  }
+  main {
+    margin-top: 100px;
+  }
+  .info {
+    text-align: center;
+    line-height: 1.5;
+    font-size: 1.3rem;
   }
 
-  @media (max-width: 992px) {
-    .main {
-      margin-left: 180px;
+  @media (max-width: 1024px) and (min-width: 769px) {
+    .company-title {
+      font-size: 24px;
     }
-
-    .sidebar {
-      width: 180px;
-    }
-
-    .sidebar ul li a {
-      padding: 7px;
-      font-size: 13px;
+    .info {
+      font-size: 1rem;
     }
   }
 
   @media (max-width: 768px) {
-    .main {
-      margin-left: 0;
-    }
-
-    .sidebar {
+    header {
       display: none;
     }
-
-    .sidebar ul li a {
-      padding: 6px;
-      font-size: 12px;
+    main {
+      margin-top: 0;
     }
   }
-
-  @media (max-width: 576px) {
-    .main {
-      margin-left: 0;
-    }
-
-    .sidebar {
-      display: none;
-    }
-
-    .sidebar ul li a {
-      padding: 5px;
-      font-size: 11px;
-    }
-  }
-
-  @media (max-width: 480px) {
-    .main {
-      margin-left: 0;
-    }
-
-    .sidebar {
-      display: none;
-    }
-
-    .sidebar ul li a {
-      padding: 4px;
-      font-size: 10px;
-    }
-  }
-
-  @media (max-width: 360px) {
-    .sidebar ul li a {
-      padding: 3px;
-      font-size: 9px;
-    }
-  }
-
-
-
 </style>
