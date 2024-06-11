@@ -9,18 +9,62 @@ const features = [
 <div class="features">
     {#each features as feature}
         <div class="feature">
-            <img src={logo} alt="logo" class="company-logo">
-            <h5>{feature.header}</h5>
-            <p>{feature.paragraph}</p>
+            <div>
+                <img src={logo} alt="logo" class="company-logo">
+            </div>
+            <div class="feature-content">
+                <h5>{feature.header}</h5>
+                <p>{feature.paragraph}</p>
+            </div>
         </div>
     {/each}
 </div>
+
 <style>
-    .features {
-      margin-top: 20px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 20px;
-    }
+	.features {
+		margin-top: 20px;
+		display: flex;
+		justify-content: center;
+		align-items: flex-start;
+		gap: 20px;
+		text-align: center;
+		flex-wrap: wrap;
+	}
+	.feature {
+		flex: 1 1 300px;
+		padding: 10px;
+		display: flex;
+        flex-direction: column;
+		justify-content: space-between;
+	}
+	.company-logo {
+		max-width: 100px;
+		margin-bottom: 10px;
+	}
+	.feature-content {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		flex-grow: 1;
+	}
+	h5 {
+		margin: 10px 0;
+		font-size: 1.2rem;
+		height: 3rem;
+	}
+	p {
+		margin: 0;
+		font-size: 1rem;
+		flex-grow: 1;
+		display: flex;
+		align-items: flex-start;
+		justify-content: center;
+		text-align: center;
+	}
+	@media (max-width: 768px) {
+		.feature {
+			flex: 1 1 100%;
+			margin-bottom: 20px;
+		}
+	}
 </style>
