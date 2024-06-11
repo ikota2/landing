@@ -42,7 +42,7 @@
             <h4>{salary}р.</h4>
         </div>
         <div class="buttons">
-            <button on:click={goToTelegram}>Написать в телегу</button>
+            <button on:click={goToTelegram} type="button">Написать в телегу</button>
             <button>Отправить резюме</button>
         </div>
     </div>

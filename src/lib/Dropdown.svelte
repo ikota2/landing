@@ -8,7 +8,7 @@
 </script>
 
 <div class="dropdown">
-    <div class="dropdown-title" on:click={toggle}>
+    <div class="dropdown-title" on:click={toggle} role="button" tabIndex="0">
         <span>{title}</span>
         <span>{isOpen ? '▲' : '▼'}</span>
     </div>
