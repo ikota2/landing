@@ -1,5 +1,7 @@
 <script>
 	import { apiBaseUrl } from '../config';
+    import Input from './Input.svelte';
+    import Textarea from './Textarea.svelte';
 
 	let name = '';
 	let email = '';
@@ -40,11 +42,11 @@
             <option value="designer">Графический дизайнер</option>
             <option value="cat">Кот</option>
         </select>
-        <input type="text" id="name" bind:value={name} placeholder="Имя" required />
-        <input type="email" id="email" bind:value={email} placeholder="Email" required />
-        <input type="text" id="telegram" placeholder="Telegram (optional)" bind:value={telegram} />
-        <textarea id="experience" bind:value={experience} placeholder="Опыт" required></textarea>
-        <button type="submit">Отправить</button>
+        <Input bind:value={name} placeholder={'Имя'} />
+        <Input bind:value={email} placeholder={'Email'} />
+        <Input bind:value={telegram} placeholder={'Telegram'} />
+        <Textarea bind:experience placeholder={'Опыт'} />
+        <button type="submit" class="btn">Отправить</button>
     </form>
 </div>
 
@@ -55,21 +57,16 @@
       justify-content: center;
       align-items: center;
 	}
-	input, select, textarea, .custom-select {
-      display: block;
-      margin-top: 0.5rem;
-      width: 15rem;
-	}
     select {
       width: auto;
     }
-	button {
-      cursor: pointer;
-      margin-top: 1rem;
-      padding: 10px;
-      width: 150px;
-      background-color: peachpuff;
-      border-radius: 5px;
-      border: 1px solid crimson;
-	}
+
+    .btn {
+			padding: 10px 20px;
+			text-decoration: none;
+			color: #6200ea;
+			border-radius: 8px;
+			cursor: pointer;
+			transition: background-color 0.3s, color 0.3s;
+}
 </style>
