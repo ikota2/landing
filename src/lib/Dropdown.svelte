@@ -10,7 +10,7 @@
 <div class="dropdown">
     <div class="dropdown-title" on:click={toggle} role="button" tabIndex="0">
         <span>{title}</span>
-        <span>{isOpen ? '▲' : '▼'}</span>
+        <span class="{isOpen ? 'arrow-rotate' : ''}">{isOpen ? '▲' : '▼'}</span>
     </div>
     <div class="dropdown-content {isOpen ? 'open' : ''}">
         <slot></slot>
@@ -19,7 +19,6 @@
 
 <style>
 	.dropdown {
-		border-bottom: 1px solid #e0e0e0;
 		cursor: pointer;
 		margin-bottom: 1rem;
 	}
@@ -34,7 +33,7 @@
 	.dropdown-content {
 		overflow: hidden;
 		max-height: 0;
-		transition: max-height 0.3s ease, transform 0.3s ease;
+		transition: max-height 0.4s ease-in-out, transform 0.3s ease;
 		transform: scaleY(0);
 		transform-origin: top;
 		background-color: #ffffff;
@@ -46,4 +45,10 @@
 		max-height: 1000px;
 		transform: scaleY(1);
 	}
+		.arrow-rotate {
+			transition: transform 0.4s ease-in-out;
+		}
+		.arrow-rotate.rotate180 {
+			transform: rotate(180deg);
+		}
 </style>
