@@ -26,11 +26,13 @@ body {
   margin: 0;
   place-items: center;
   min-width: 320px;
-	background-image: url('assets/banner-1.jpg');
-	background-position: center;
+	/*background-image: url('assets/banner-1.jpg');*/
+	/*background-position: center;*/
+	/*background-color: #e1f8f1;*/
+  /*background-color: #fff;*/
+  background: rgb(180,58,125);
+  background: linear-gradient(90deg, rgba(180,58,125,0.10550157563025209) 0%, rgba(205,253,29,0.06068364845938379) 50%, rgba(69,252,181,0.11390493697478987) 100%);
 	background-repeat: repeat;
-	background-color: #e1f8f1;
-  display: grid;
   grid-template-rows: auto 1fr;
 }
 
