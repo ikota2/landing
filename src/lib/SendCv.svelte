@@ -33,7 +33,7 @@
 	};
 </script>
 
-<div>
+<div class="form-container">
     <form on:submit|preventDefault={handleSubmit}>
         <select bind:value={position} class="custom-select" required>
             <option value="" disabled selected>Выберите должность</option>
@@ -45,28 +45,36 @@
         <Input bind:value={name} placeholder={'Имя'} />
         <Input bind:value={email} placeholder={'Email'} />
         <Input bind:value={telegram} placeholder={'Telegram'} />
-        <Textarea bind:experience placeholder={'Опыт'} />
-        <button type="submit" class="btn">Отправить</button>
+        <Textarea bind:value={experience} placeholder={'Опыт'} />
+        <div class="btn-wrapper">
+            <button type="submit" class="btn">Отправить</button>
+        </div>
     </form>
 </div>
 
 <style>
-	form {
+	.form-container {
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
 	}
-    select {
-      width: auto;
+    .custom-select {
+      width: 100%;
     }
-
+    .btn-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
     .btn {
-			padding: 10px 20px;
-			text-decoration: none;
-			color: #6200ea;
-			border-radius: 8px;
-			cursor: pointer;
-			transition: background-color 0.3s, color 0.3s;
-}
+        margin-top: 20px;
+        padding: 10px 20px;
+        text-decoration: none;
+        color: #6200ea;
+        background-color: #fff;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s, color 0.3s;
+    }
 </style>

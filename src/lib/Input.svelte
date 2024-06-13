@@ -1,29 +1,30 @@
 <script>
     export let value;
     export let placeholder;
+
+    function handleInput(event) {
+        value = event.target.value;
+    }
 </script>
 
-<div class="box">
-    <div class="input-wrapper">
-        <input type="text" id="input" class="form-control" placeholder={placeholder}>
-        <label for="input" class="control-label">{placeholder}</label>
-    </div>
+<div class="input-wrapper">
+    <input type="text" id="input" class="form-control" placeholder={placeholder} value={value} on:input={handleInput}>
+    <label for="input" class="control-label">{placeholder}</label>
 </div>
 
 <style>
 	.input-wrapper {
 		position: relative;
-		margin: 15px auto;
         height: 100%;
-	}
+        margin-top: 30px;
+    }
 
 	.form-control {
 		display: block;
 		line-height: 2em;
-		margin: 0;
 		padding-left: 10px;
 		width: 100%;
-      height: 35px;
+        height: 35px;
 		font-size: medium;
 		border: 0;
         outline: 0;

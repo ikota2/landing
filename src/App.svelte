@@ -58,7 +58,6 @@
           </div>
       </section>
     </main>
-    <footer>hello footer</footer>
 </body>
 
 <style>

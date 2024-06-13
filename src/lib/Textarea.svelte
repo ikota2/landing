@@ -1,25 +1,27 @@
 <script>
 	export let value;
 	export let placeholder;
+
+    function handleInput(event) {
+        value = event.target.value;
+    }
 </script>
 
-<div class="box">
-    <div class="textarea-wrapper">
-        <textarea id="textarea" class="form-control" bind:value placeholder={placeholder}></textarea>
-        <label for="textarea" class="control-label">{placeholder}</label>
-    </div>
+<div class="textarea-wrapper">
+    <textarea id="textarea" class="form-control" bind:value placeholder={placeholder} on:input={handleInput}></textarea>
+    <label for="textarea" class="control-label">{placeholder}</label>
 </div>
 
 <style>
 	.textarea-wrapper {
 		position: relative;
-		margin: 15px auto;
 		height: 100%;
-	}
+        margin-top: 30px;
+    }
 
 	.form-control {
 		display: block;
-		line-height: 1.5em;
+		line-height: 2em;
 		margin: 0;
 		padding-left: 10px;
 		padding-top: 10px;
