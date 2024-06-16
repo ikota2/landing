@@ -36,6 +36,11 @@ body {
   grid-template-rows: auto 1fr;
 }
 
+header {
+  background: rgb(150,233,198);
+  background: linear-gradient(90deg, rgba(150,233,198,1) 0%, rgba(131,192,193,1) 35%, rgba(105,98,173,1) 100%);
+}
+
 h1 {
   font-size: 3.2em;
   line-height: 1.1;

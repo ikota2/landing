@@ -41,22 +41,31 @@
 		margin: 0;
 		padding: 0;
 	}
+
 	nav ul li button {
 		padding: 10px 20px;
 		text-decoration: none;
-		color: #6200ea;
+        background-color: #fff;
+      color: #b74c7d;
 		border-radius: 8px;
 		cursor: pointer;
 		transition: background-color 0.3s, color 0.3s;
 	}
+    nav ul li button:hover {
+      background-color: #f0f0f0;
+    }
 	nav ul li button.active {
-		background-color: #6200ea;
-		color: #fff;
+        background-color: #b74c7d;
+        color: white;
+        border-color: #b74c7d;
 	}
-	nav ul li button:hover {
-		background-color: #3700b3;
-		color: #fff;
-	}
+    nav ul li button.active:hover {
+      background-color: #9e426e;
+    }
+    nav ul li button:focus {
+        outline: 2px solid #96e9c6;
+        outline-offset: 2px;
+    }
     @media (max-width: 1024px) and (min-width: 769px) {
         nav ul li button {
             padding: 8px 16px;
