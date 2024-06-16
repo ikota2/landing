@@ -1,10 +1,11 @@
 <script>
-  import viteLogo from '/vite.svg';
   import Features from './lib/Features.svelte';
   import Navigation from './lib/Navigation.svelte';
   import {jobs} from './data/index.js';
   import Job from './lib/Job.svelte';
   import SendCv from './lib/SendCv.svelte';
+
+  import logo from './assets/juvelogo.svg';
 
   let activeSection = 'info';
   const { remoteJobs, onsiteJobs } = jobs;
@@ -21,8 +22,7 @@
     <header>
       <div class="header-container">
         <div class="company">
-          <img src={viteLogo} alt="logo" class="company-logo">
-          <p class="company-title">Ювента</p>
+          <img src={logo} alt="logo" class="logo"/>
         </div>
         <Navigation
             scrollToSection={scrollToSection}
@@ -71,7 +71,7 @@
     top: 0;
     left: 0;
     width: 100%;
-    background-color: rgba(216, 27, 66, 0.94);
+    background-color: rgba(200, 165, 172, 0.94);
     color: #fff;
     text-align: center;
     padding: 5px 10px;
@@ -82,26 +82,23 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    height: 100%;
   }
   .company {
     display: flex;
     align-items: center;
-    gap: 30px;
   }
-  .company-title {
-    font-size: 32px;
+  .logo {
+    padding-top: 30px;
+    display: block;
+    width: 300px;
+    height: auto;
   }
-
-  section:not(:first-child) {
-    margin-top: 50px;
+  #info, #remote, #onsite, #contacts {
+    padding-top: 110px;
   }
   main {
     margin-top: 3rem;
-    /*background: rgb(180,58,125);*/
-    /*background: linear-gradient(90deg,*/
-    /*    rgba(180,58,125,0.186734068627451) 0%,*/
-    /*    rgba(205,253,29,0.1643251050420168) 50%,*/
-    /*    rgba(69,252,181,0.19233630952380953) 100%);*/
   }
 
   .info {
@@ -122,9 +119,6 @@
     color: #333;
   }
   @media (max-width: 1024px) and (min-width: 769px) {
-    .company-title {
-      font-size: 24px;
-    }
     .info {
       font-size: 1rem;
     }
