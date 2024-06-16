@@ -1,10 +1,11 @@
 <script>
-  import viteLogo from '/vite.svg';
   import Features from './lib/Features.svelte';
   import Navigation from './lib/Navigation.svelte';
   import {jobs} from './data/index.js';
   import Job from './lib/Job.svelte';
   import SendCv from './lib/SendCv.svelte';
+
+  import svgP from './assets/circles.svg';
 
   let activeSection = 'info';
   const { remoteJobs, onsiteJobs } = jobs;
@@ -21,7 +22,7 @@
     <header>
       <div class="header-container">
         <div class="company">
-          <img src={viteLogo} alt="logo" class="company-logo">
+          <img src={svgP} alt="Your description" class="logo"/>
           <p class="company-title">Ювента</p>
         </div>
         <Navigation
@@ -82,6 +83,10 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+  }
+  .logo {
+    width: 50px;
+    height: 50px;
   }
   .company {
     display: flex;
