@@ -4,8 +4,7 @@
   import {jobs} from './data/index.js';
   import Job from './lib/Job.svelte';
   import SendCv from './lib/SendCv.svelte';
-
-  import logo from './assets/juvelogo.svg';
+  import logo2 from './assets/juvelogo2.svg';
 
   let activeSection = 'info';
   const { remoteJobs, onsiteJobs } = jobs;
@@ -22,7 +21,7 @@
     <header>
       <div class="header-container">
         <div class="company">
-          <img src={logo} alt="logo" class="logo"/>
+          <img src={logo2} alt="logo" class="logo"/>
         </div>
         <Navigation
             scrollToSection={scrollToSection}
@@ -33,8 +32,8 @@
     <main>
       <section id="info">
         <div class="info">
-          <h2>Кто мы?</h2>
-          <p>
+          <h2 class="title">Кто мы?</h2>
+            <p>
             Кадровое агентство «Ювента» — ваш надежный партнер в поиске профессионалов и создании успешных команд.
             Мы специализируемся на подборе персонала для различных отраслей, используя современные методики и индивидуальный подход к каждому клиенту.
             Наша цель — обеспечить ваш бизнес талантливыми и мотивированными сотрудниками, способными достигать высоких результатов.
@@ -88,19 +87,25 @@
     display: flex;
     align-items: center;
   }
-  .logo {
-    padding-top: 30px;
-    display: block;
-    width: 300px;
-    height: auto;
-  }
+  /*.logo {*/
+  /*  padding-top: 30px;*/
+  /*  display: block;*/
+  /*  width: 300px;*/
+  /*  height: auto;*/
+  /*}*/
+	.logo {
+        margin-bottom: 20px;
+        margin-left: -50px;
+	}
   #info, #remote, #onsite, #contacts {
     padding-top: 110px;
   }
   main {
     margin-top: 3rem;
   }
-
+	.title {
+			font-weight: 700;
+    }
   .info {
     text-align: center;
     line-height: 1.5;

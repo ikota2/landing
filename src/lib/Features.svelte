@@ -55,6 +55,7 @@
 		margin: 10px 0;
 		font-size: 1.2rem;
 		height: 3rem;
+        font-weight: 700;
 	}
 	p {
 		margin: 0;
