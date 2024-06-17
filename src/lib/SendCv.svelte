@@ -2,13 +2,23 @@
 	import { apiBaseUrl } from '../config';
     import Input from './Input.svelte';
     import Textarea from './Textarea.svelte';
+    import { jobs } from '../stores/jobs';
+    import {get} from 'svelte/store';
+    import { onMount } from 'svelte';
 
+    let jobList = [];
 	let name = '';
 	let email = '';
 	let telegram = '';
 	let position = '';
 	let experience = '';
 
+    onMount(() => {
+        jobList = get(jobs).filter(job => job.isChosen).map(job => job.engName);
+        if (jobList.length) {
+            position = jobList[0];
+        }
+    });
 	const handleSubmit = async (event) => {
 		event.preventDefault();
 		const formData = { name, email, telegram, position, experience };
@@ -31,16 +41,17 @@
 			alert('Error submitting form');
 		}
 	};
+		console.log(get(jobs));
+
 </script>
 
 <div class="form-container">
     <form on:submit|preventDefault={handleSubmit}>
         <select bind:value={position} class="custom-select" required>
             <option value="" disabled selected>Выберите должность</option>
-            <option value="doctor">Врач</option>
-            <option value="copywriter">Копирайтер</option>
-            <option value="designer">Графический дизайнер</option>
-            <option value="cat">Кот</option>
+            {#each get(jobs) as job}
+                <option value={job.engName}>{job.name}</option>
+            {/each}
         </select>
         <Input bind:value={name} placeholder={'Имя'} />
         <Input bind:value={email} placeholder={'Email'} />
