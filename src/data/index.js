@@ -1,6 +1,6 @@
 const remoteJobs = [
-	{ name: 'Графический дизайнер', responsibilities: ['рисовать пикчи'], requirements: ['владеть фш и фигмой'], conditions: [], salary: '75000-150000' },
-	{ name: 'Диктор', responsibilities: ['болтать', 'не пиздеть'], requirements: ['грамотная речь', 'опыт работы'], conditions: [],
+	{ name: 'Графический дизайнер', engName: 'designer', responsibilities: ['рисовать пикчи'], requirements: ['владеть фш и фигмой'], conditions: [], salary: '75000-150000' },
+	{ name: 'Диктор', responsibilities: ['болтать', 'не придумывать'], requirements: ['грамотная речь', 'опыт работы'], conditions: [],
 		salary: '50000-100000'
 	},
 	{ name: 'Саппорт в благотворительный фонд',

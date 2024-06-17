@@ -1,4 +1,6 @@
 <script>
+    import {jobs} from '../stores/jobs.js';
+
     export let responsibilities;
     export let requirements;
     export let conditions;
@@ -7,13 +9,15 @@
     function goToTelegram() {
         window.open("https://t.me/bloommmannn", "_blank");
     }
-
+		function chooseJob() {
+			document.getElementById('contacts').scrollIntoView({ behavior: 'smooth' });
+		}
 </script>
 
 <div class="dropdown-item">
     <div class="subItem">
         <div class="responsibilities">
-            <h4>Обязанности</h4>
+            <h4 class="title">Обязанности</h4>
             <ul>
                 {#each responsibilities as responsibility}
                     <li>{responsibility}</li>
@@ -42,8 +46,8 @@
             <h4>{salary}р.</h4>
         </div>
         <div class="buttons">
-            <button on:click={goToTelegram} type="button">Написать в телегу</button>
-            <button>Отправить резюме</button>
+            <button on:click={goToTelegram} type="button" class="btn">Написать в телегу</button>
+            <button on:click={chooseJob} class="btn">Отправить резюме</button>
         </div>
     </div>
 </div>
@@ -75,21 +79,32 @@
 	.dropdown-item ul li {
 		list-style-type: disc;
 	}
-	.dropdown-item button {
-		grid-column: 1 / -1;
-		margin-top: 1rem;
-		padding: 0.5rem 1rem;
-		background-color: #fff;
-		color: #6200ea;
-		border: 1px solid #6200ea;
-		cursor: pointer;
-		align-self: center;
-		justify-self: center;
-	}
-	.dropdown-item button:hover {
-		background-color: #3700b3;
-		color: #fff;
-	}
+
+    .btn {
+        margin-top: 20px;
+        padding: 10px 20px;
+        text-decoration: none;
+        background-color: #fff;
+        color: #b74c7d;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s, color 0.3s;
+    }
+    .btn:hover {
+        background-color: #f0f0f0;
+    }
+    .btn.active {
+        background-color: #b74c7d;
+        color: white;
+        border-color: #b74c7d;
+    }
+    .btn.active:hover {
+        background-color: #9e426e;
+    }
+    .btn:focus {
+        outline: 2px solid #96e9c6;
+        outline-offset: 2px;
+    }
 	.salary {
 		font-weight: 500;
 		font-size: 1.2rem;
