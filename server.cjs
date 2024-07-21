@@ -71,7 +71,7 @@ app.post('/api/login', async (req, res) => {
 		const isValid = await bcrypt.compare(password, user.passwordHash);
 
 		if (!isValid) {
-			return res.status(401).send('Invalid username or password');
+			return res.status(401).send('Invalid username or password (jwt case)');
 		}
 
 		const token = jwt.sign({ userId: user._id }, jwtSecret, { expiresIn: '1h' });
