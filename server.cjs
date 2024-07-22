@@ -3,7 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const { MongoClient, ServerApiVersion } = require('mongodb');
 const app = express();
-const bcrypt = require('bcrypt');
+// const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const path = require('path');
 
@@ -63,27 +63,28 @@ app.post('/api/login', async (req, res) => {
 	const { username, password } = req.body;
 	try {
 		const user = await collectionUsers.findOne({ username });
+		const dbPassword = await collectionUsers.findOne({ password });
+
 		console.log('Login attempt for user: ', username);
 
 		if (!user) {
 			console.log('User was not found');
-			return res.status(401).send('Invalid username or password');
+			return res.status(401).send('Invalid username');
 		}
-
-		console.log('User was found:', user);
-
-		const isValid = await bcrypt.compare(password, user.passwordHash);
-		console.log('Password comparison result:', isValid);
+		if (!dbPassword) {
+			return res.status(401).send('Invalid password')
+		}
+		// const isValid = await bcrypt.compare(password, user.passwordHash);
+		// console.log('Password comparison result:', isValid);
 
 		// if (!isValid) {
 		// 	return res.status(401).send('Invalid username or password (jwt case)' + ' ' + `password: ${password} passwordHash: ${user.passwordHash}`);
 		// }
 
-		const dbPassword = await collectionUsers.findOne({ password });
-		if (dbPassword === password) {
+		// if (dbPassword === password) {
 			const token = jwt.sign({ userId: user._id }, jwtSecret, { expiresIn: '1h' });
 			res.json({ token }).status(200);
-		}
+		// }
 	} catch (err) {
 		console.error('Error during login:', err);
 		res.status(500).send('Error during login');
