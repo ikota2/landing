@@ -64,9 +64,6 @@ app.post('/api/login', async (req, res) => {
 	try {
 		const user = await collectionUsers.findOne({ username });
 		const dbPassword = await collectionUsers.findOne({ password });
-
-		console.log('Login attempt for user: ', username);
-
 		if (!user) {
 			console.log('User was not found');
 			return res.status(401).send('Invalid username');
@@ -80,11 +77,10 @@ app.post('/api/login', async (req, res) => {
 		// if (!isValid) {
 		// 	return res.status(401).send('Invalid username or password (jwt case)' + ' ' + `password: ${password} passwordHash: ${user.passwordHash}`);
 		// }
-
-		// if (dbPassword === password) {
+		if (user && dbPassword) {
 			const token = jwt.sign({ userId: user._id }, jwtSecret, { expiresIn: '1h' });
-			res.json({ token }).status(200);
-		// }
+			return res.json({ token }).status(200);
+		}
 	} catch (err) {
 		console.error('Error during login:', err);
 		res.status(500).send('Error during login');
