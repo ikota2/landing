@@ -30,6 +30,8 @@ app.use(express.static(path.join(__dirname, 'dist')));
 
 let collectionCvs;
 let collectionUsers;
+let collectionRemotes;
+let collectionOnSites;
 
 async function connectToDatabase() {
 	try {
@@ -37,69 +39,29 @@ async function connectToDatabase() {
 		console.log("Connected to MongoDB!");
 		const dbUsers = client.db('db_users')
 		const dbCvs = client.db('db_cvs');
+		const dbVacancies = client.db('dv_vacancies');
 		collectionUsers = dbUsers.collection('collectionOfUsers');
 		collectionCvs = dbCvs.collection('collectionOfCvs');
+		collectionRemotes = dbVacancies.collection('collectionOfRemotes');
+		collectionOnSites = dbVacancies.collection('collectionOfOnSites');
 	} catch (err) {
 		console.error('Failed to connect to MongoDB', err);
 		process.exit(1);
 	}
 }
 
-// function authenticateToken(req, res, next) {
-// 	const authHeader = req.headers['authorization'];
-// 	const token = authHeader && authHeader.split(' ')[1];
-//
-// 	if (!token) return res.sendStatus(401);
-//
-// 	jwt.verify(token, jwtSecret, (err, user) => {
-// 		if (err) return res.sendStatus(403);
-// 		req.user = user;
-// 		next();
-// 	});
-// }
+function authenticateToken(req, res, next) {
+	const authHeader = req.headers['authorization'];
+	const token = authHeader && authHeader.split(' ')[1];
 
+	if (!token) return res.sendStatus(401);
 
-app.post('/api/login', async (req, res) => {
-	const { username, password } = req.body;
-	try {
-		const user = await collectionUsers.findOne({ username });
-		if (!user) {
-			console.log('User was not found');
-			return res.status(401).send('Invalid username');
-		}
-		const isValid = await bcrypt.compare(password, user.passwordHash);
-		if (!isValid) {
-			console.log('Invalid password');
-			return res.status(401).send('Invalid password');
-		}
-		const token = jwt.sign({ userId: user._id }, jwtSecret, { expiresIn: '1h' });
-		return res.status(200).json({ token });
-	} catch (err) {
-		console.error('Error during login:', err);
-		res.status(500).send('Error during login');
-	}
-});
-
-// TODO
-// app.post('/api/create-cv', authenticateToken, async (req, res) => {
-// 	const { name, email, telegram, experience, position } = req.body;
-// 	const newCv = {
-// 		id: Date.now().toString(),
-// 		name,
-// 		email,
-// 		telegram,
-// 		experience,
-// 		position
-// 	};
-//
-// 	try {
-// 		await collectionCvs.insertOne(newCv);
-// 		res.status(200).send('New CV published successfully');
-// 	} catch (err) {
-// 		console.error('Error saving data:', err);
-// 		res.status(500).send('Error saving data');
-// 	}
-// });
+	jwt.verify(token, jwtSecret, (err, user) => {
+		if (err) return res.sendStatus(403);
+		req.user = user;
+		next();
+	});
+}
 
 app.post('/api/send-cv', async (req, res) => {
 	const { name, email, telegram, experience, position } = req.body;
@@ -121,7 +83,49 @@ app.post('/api/send-cv', async (req, res) => {
 	}
 });
 
-app.get('/api/get-data', async (req, res) => {
+app.get('/api/get-onsite-vacancies', async (req, res) => {
+	try {
+		const vacancies = await collectionOnSites.find({}).toArray();
+		res.json(vacancies);
+	} catch (err) {
+		console.error('Error retrieving on-site vacancies:', err);
+		res.status(500).send('Error retrieving on-site vacancies');
+	}
+});
+
+app.get('/api/get-remote-vacancies', async (req, res) => {
+	try {
+		const vacancies = await collectionRemotes.find({}).toArray();
+		res.json(vacancies);
+	} catch (err) {
+		console.error('Error retrieving remote vacancies:', err);
+		res.status(500).send('Error retrieving remote vacancies');
+	}
+});
+
+// admin api
+app.post('/api/login', async (req, res) => {
+	const { username, password } = req.body;
+	try {
+		const user = await collectionUsers.findOne({ username });
+		if (!user) {
+			console.log('User was not found');
+			return res.status(401).send('Invalid username');
+		}
+		const isValid = await bcrypt.compare(password, user.passwordHash);
+		if (!isValid) {
+			console.log('Invalid password');
+			return res.status(401).send('Invalid password');
+		}
+		const token = jwt.sign({ userId: user._id }, jwtSecret, { expiresIn: '1h' });
+		return res.status(200).json({ token });
+	} catch (err) {
+		console.error('Error during login:', err);
+		res.status(500).send('Error during login');
+	}
+});
+
+app.get('/api/get-cvs', async (req, res) => {
 	try {
 		const cvs = await collectionCvs.find({}).toArray();
 		res.json(cvs);
@@ -142,6 +146,123 @@ app.delete('/api/delete-cv/:id', async (req, res) => {
 		res.status(500).send('Error deleting data');
 	}
 });
+
+app.post('/api/create-onsite-vacancy', authenticateToken, async (req, res) => {
+	const { id, username, responsibilities, requirements, conditions, salary } = req.body;
+	const newVacancy = {
+		id,
+		username,
+		responsibilities,
+		requirements,
+		conditions,
+		salary: salary || null
+	};
+
+	try {
+		await collectionOnSites.insertOne(newVacancy);
+		res.status(200).send('On-site vacancy created successfully');
+	} catch (err) {
+		console.error('Error creating on-site vacancy:', err);
+		res.status(500).send('Error creating on-site vacancy');
+	}
+});
+
+app.post('/api/create-remote-vacancy', authenticateToken, async (req, res) => {
+	const { id, username, responsibilities, requirements, conditions, salary } = req.body;
+	const newVacancy = {
+		id,
+		username,
+		responsibilities,
+		requirements,
+		conditions,
+		salary: salary || null
+	};
+
+	try {
+		await collectionRemotes.insertOne(newVacancy);
+		res.status(200).send('Remote vacancy created successfully');
+	} catch (err) {
+		console.error('Error creating remote vacancy:', err);
+		res.status(500).send('Error creating remote vacancy');
+	}
+});
+
+app.get('/api/get-onsite-vacancies', authenticateToken, async (req, res) => {
+	try {
+		const vacancies = await collectionOnSites.find({}).toArray();
+		res.json(vacancies);
+	} catch (err) {
+		console.error('Error retrieving on-site vacancies:', err);
+		res.status(500).send('Error retrieving on-site vacancies');
+	}
+});
+
+app.get('/api/get-remote-vacancies', authenticateToken, async (req, res) => {
+	try {
+		const vacancies = await collectionRemotes.find({}).toArray();
+		res.json(vacancies);
+	} catch (err) {
+		console.error('Error retrieving remote vacancies:', err);
+		res.status(500).send('Error retrieving remote vacancies');
+	}
+});
+
+app.delete('/api/remove-onsite-vacancy/:id', authenticateToken, async (req, res) => {
+	const { id } = req.params;
+
+	try {
+		await collectionOnSites.deleteOne({ id });
+		res.status(200).send('On-site vacancy deleted successfully');
+	} catch (err) {
+		console.error('Error deleting on-site vacancy:', err);
+		res.status(500).send('Error deleting on-site vacancy');
+	}
+});
+
+app.delete('/api/remove-remote-vacancy/:id', authenticateToken, async (req, res) => {
+	const { id } = req.params;
+
+	try {
+		await collectionRemotes.deleteOne({ id });
+		res.status(200).send('Remote vacancy deleted successfully');
+	} catch (err) {
+		console.error('Error deleting remote vacancy:', err);
+		res.status(500).send('Error deleting remote vacancy');
+	}
+});
+
+app.post('/api/edit-onsite-vacancy/:id', authenticateToken, async (req, res) => {
+	const { id } = req.params;
+	const { username, responsibilities, requirements, conditions, salary } = req.body;
+
+	try {
+		await collectionOnSites.updateOne(
+			{ id },
+			{ $set: { username, responsibilities, requirements, conditions, salary: salary || null } }
+		);
+		res.status(200).send('On-site vacancy updated successfully');
+	} catch (err) {
+		console.error('Error updating on-site vacancy:', err);
+		res.status(500).send('Error updating on-site vacancy');
+	}
+});
+
+app.post('/api/edit-remote-vacancy/:id', authenticateToken, async (req, res) => {
+	const { id } = req.params;
+	const { username, responsibilities, requirements, conditions, salary } = req.body;
+
+	try {
+		await collectionRemotes.updateOne(
+			{ id },
+			{ $set: { username, responsibilities, requirements, conditions, salary: salary || null } }
+		);
+		res.status(200).send('Remote vacancy updated successfully');
+	} catch (err) {
+		console.error('Error updating remote vacancy:', err);
+		res.status(500).send('Error updating remote vacancy');
+	}
+});
+
 
 app.get('*', (req, res) => {
 	res.sendFile(path.join(__dirname, 'dist', 'index.html'));
