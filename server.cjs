@@ -30,8 +30,8 @@ app.use(express.static(path.join(__dirname, 'dist')));
 
 let collectionCvs;
 let collectionUsers;
-let collectionRemotes;
-let collectionOnSites;
+let collectionOfRemotes;
+let collectionOfOnSites;
 
 async function connectToDatabase() {
 	try {
@@ -42,8 +42,8 @@ async function connectToDatabase() {
 		const dbVacancies = client.db('dv_vacancies');
 		collectionUsers = dbUsers.collection('collectionOfUsers');
 		collectionCvs = dbCvs.collection('collectionOfCvs');
-		collectionRemotes = dbVacancies.collection('collectionOfRemotes');
-		collectionOnSites = dbVacancies.collection('collectionOfOnSites');
+		collectionOfRemotes = dbVacancies.collection('collectionOfRemotes');
+		collectionOfOnSites = dbVacancies.collection('collectionOfOnSites');
 	} catch (err) {
 		console.error('Failed to connect to MongoDB', err);
 		process.exit(1);
@@ -85,7 +85,7 @@ app.post('/api/send-cv', async (req, res) => {
 
 app.get('/api/get-onsite-vacancies', async (req, res) => {
 	try {
-		const vacancies = await collectionOnSites.find({}).toArray();
+		const vacancies = await collectionOfOnSites.find({}).toArray();
 		res.json(vacancies);
 	} catch (err) {
 		console.error('Error retrieving on-site vacancies:', err);
@@ -95,7 +95,7 @@ app.get('/api/get-onsite-vacancies', async (req, res) => {
 
 app.get('/api/get-remote-vacancies', async (req, res) => {
 	try {
-		const vacancies = await collectionRemotes.find({}).toArray();
+		const vacancies = await collectionOfRemotes.find({}).toArray();
 		res.json(vacancies);
 	} catch (err) {
 		console.error('Error retrieving remote vacancies:', err);
@@ -159,7 +159,7 @@ app.post('/api/create-onsite-vacancy', authenticateToken, async (req, res) => {
 	};
 
 	try {
-		await collectionOnSites.insertOne(newVacancy);
+		await collectionOfOnSites.insertOne(newVacancy);
 		res.status(200).send('On-site vacancy created successfully');
 	} catch (err) {
 		console.error('Error creating on-site vacancy:', err);
@@ -179,7 +179,7 @@ app.post('/api/create-remote-vacancy', authenticateToken, async (req, res) => {
 	};
 
 	try {
-		await collectionRemotes.insertOne(newVacancy);
+		await collectionOfRemotes.insertOne(newVacancy);
 		res.status(200).send('Remote vacancy created successfully');
 	} catch (err) {
 		console.error('Error creating remote vacancy:', err);
@@ -189,7 +189,7 @@ app.post('/api/create-remote-vacancy', authenticateToken, async (req, res) => {
 
 app.get('/api/get-onsite-vacancies', authenticateToken, async (req, res) => {
 	try {
-		const vacancies = await collectionOnSites.find({}).toArray();
+		const vacancies = await collectionOfOnSites.find({}).toArray();
 		res.json(vacancies);
 	} catch (err) {
 		console.error('Error retrieving on-site vacancies:', err);
@@ -199,7 +199,7 @@ app.get('/api/get-onsite-vacancies', authenticateToken, async (req, res) => {
 
 app.get('/api/get-remote-vacancies', authenticateToken, async (req, res) => {
 	try {
-		const vacancies = await collectionRemotes.find({}).toArray();
+		const vacancies = await collectionOfRemotes.find({}).toArray();
 		res.json(vacancies);
 	} catch (err) {
 		console.error('Error retrieving remote vacancies:', err);
@@ -211,7 +211,7 @@ app.delete('/api/remove-onsite-vacancy/:id', authenticateToken, async (req, res)
 	const { id } = req.params;
 
 	try {
-		await collectionOnSites.deleteOne({ id });
+		await collectionOfOnSites.deleteOne({ id });
 		res.status(200).send('On-site vacancy deleted successfully');
 	} catch (err) {
 		console.error('Error deleting on-site vacancy:', err);
@@ -223,7 +223,7 @@ app.delete('/api/remove-remote-vacancy/:id', authenticateToken, async (req, res)
 	const { id } = req.params;
 
 	try {
-		await collectionRemotes.deleteOne({ id });
+		await collectionOfRemotes.deleteOne({ id });
 		res.status(200).send('Remote vacancy deleted successfully');
 	} catch (err) {
 		console.error('Error deleting remote vacancy:', err);
@@ -236,7 +236,7 @@ app.post('/api/edit-onsite-vacancy/:id', authenticateToken, async (req, res) => 
 	const { username, responsibilities, requirements, conditions, salary } = req.body;
 
 	try {
-		await collectionOnSites.updateOne(
+		await collectionOfOnSites.updateOne(
 			{ id },
 			{ $set: { username, responsibilities, requirements, conditions, salary: salary || null } }
 		);
@@ -252,7 +252,7 @@ app.post('/api/edit-remote-vacancy/:id', authenticateToken, async (req, res) => 
 	const { username, responsibilities, requirements, conditions, salary } = req.body;
 
 	try {
-		await collectionRemotes.updateOne(
+		await collectionOfRemotes.updateOne(
 			{ id },
 			{ $set: { username, responsibilities, requirements, conditions, salary: salary || null } }
 		);
