@@ -199,11 +199,11 @@ app.get('/api/get-onsite-vacancies', authenticateToken, async (req, res) => {
 
 app.get('/api/get-remote-vacancies', async (req, res) => {
 	try {
-		const vacancies = await collectionOfRemotes.find({}).toArray();
-		res.json(vacancies);
+		const vacancies = await collectionOfRemotes.findOne('collectionOfRemotes');
+		return res.json(vacancies);
 	} catch (err) {
 		console.error('Error retrieving remote vacancies:', err);
-		res.status(500).send('Error retrieving remote vacancies');
+		return res.status(500).send('Error retrieving remote vacancies');
 	}
 });
 
