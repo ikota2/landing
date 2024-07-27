@@ -39,7 +39,7 @@ async function connectToDatabase() {
 		console.log("Connected to MongoDB!");
 		const dbUsers = client.db('db_users')
 		const dbCvs = client.db('db_cvs');
-		const dbVacancies = client.db('dv_vacancies');
+		const dbVacancies = client.db('db_vacancies');
 		collectionUsers = dbUsers.collection('collectionOfUsers');
 		collectionCvs = dbCvs.collection('collectionOfCvs');
 		collectionOfRemotes = dbVacancies.collection('collectionOfRemotes');
