@@ -197,7 +197,7 @@ app.get('/api/get-onsite-vacancies', authenticateToken, async (req, res) => {
 	}
 });
 
-app.get('/api/get-remote-vacancies', async (req, res) => {
+app.get('/api/get-remote-vacancies', authenticateToken, async (req, res) => {
 	try {
 		const vacancies = await collectionOfRemotes.findOne('collectionOfRemotes');
 		return res.json(vacancies);
