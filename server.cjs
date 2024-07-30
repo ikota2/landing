@@ -28,7 +28,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'dist')));
 
-let collectionCvs;
+let collectionOfCvs;
 let collectionUsers;
 let collectionOfRemotes;
 let collectionOfOnSites;
@@ -41,7 +41,7 @@ async function connectToDatabase() {
 		const dbCvs = client.db('db_cvs');
 		const dbVacancies = client.db('db_vacancies');
 		collectionUsers = dbUsers.collection('collectionOfUsers');
-		collectionCvs = dbCvs.collection('collectionOfCvs');
+		collectionOfCvs = dbCvs.collection('collectionOfCvs');
 		collectionOfRemotes = dbVacancies.collection('collectionOfRemotes');
 		collectionOfOnSites = dbVacancies.collection('collectionOfOnSites');
 	} catch (err) {
@@ -75,7 +75,7 @@ app.post('/api/send-cv', async (req, res) => {
 	};
 
 	try {
-		await collectionCvs.insertOne(newCv);
+		await collectionOfCvs.insertOne(newCv);
 		return res.status(200).send('Form submitted successfully');
 	} catch (err) {
 		return res.status(500).send('Error saving data');
@@ -126,7 +126,7 @@ app.post('/api/login', async (req, res) => {
 
 app.get('/api/get-cvs', async (req, res) => {
 	try {
-		const cvs = await collectionCvs.findOne('collectionOfCvs');
+		const cvs = await collectionOfCvs.findOne('collectionOfCvs');
 		return res.json(cvs);
 	} catch (err) {
 		return res.status(500).send('Error reading data');
@@ -137,7 +137,7 @@ app.delete('/api/delete-cv/:id', async (req, res) => {
 	const { id } = req.params;
 
 	try {
-		await collectionCvs.deleteOne({ id });
+		await collectionOfCvs.deleteOne({ id });
 		return res.status(200).send('CV deleted successfully');
 	} catch (err) {
 		return res.status(500).send('Error deleting data');
