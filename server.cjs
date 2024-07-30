@@ -126,7 +126,7 @@ app.post('/api/login', async (req, res) => {
 
 app.get('/api/get-cvs', authenticateToken, async (req, res) => {
 	try {
-		const cvs = await collectionOfCvs.findOne({});
+		const cvs = await collectionOfCvs.find({});
 		return res.json(cvs);
 	} catch (err) {
 		return res.status(500).send('Error reading data');
