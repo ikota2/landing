@@ -131,7 +131,7 @@ app.get('/api/get-cvs', authenticateToken, async (req, res) => {
 		// returns collection.length
 		// const size = await collectionOfCvs.countDocuments();
 		// return res.json(size);
-		const cvs = await collectionOfCvs.find();
+		const cvs = await collectionOfCvs.findOne();
 		return res.json(cvs);
 	} catch (err) {
 		return res.status(500).send('Error reading data');
