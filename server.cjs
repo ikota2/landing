@@ -82,6 +82,7 @@ app.post('/api/send-cv', async (req, res) => {
 	}
 });
 
+// TODO check
 app.get('/api/get-onsite-vacancies', async (req, res) => {
 	try {
 		const vacancies = await collectionOfOnSites.find({}).toArray();
@@ -91,6 +92,7 @@ app.get('/api/get-onsite-vacancies', async (req, res) => {
 	}
 });
 
+// TODO check
 app.get('/api/get-remote-vacancies', async (req, res) => {
 	try {
 		const vacancies = await collectionOfRemotes.find({}).toArray();
@@ -124,7 +126,7 @@ app.post('/api/login', async (req, res) => {
 
 app.get('/api/get-cvs', async (req, res) => {
 	try {
-		const cvs = await collectionCvs.findOne('collectionCvs');
+		const cvs = await collectionCvs;
 		return res.json(cvs);
 	} catch (err) {
 		return res.status(500).send('Error reading data');
