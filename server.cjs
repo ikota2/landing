@@ -124,7 +124,7 @@ app.post('/api/login', async (req, res) => {
 	}
 });
 
-app.get('/api/get-cvs', async (req, res) => {
+app.get('/api/get-cvs', authenticateToken, async (req, res) => {
 	try {
 		const cvs = await collectionOfCvs.findOne('collectionOfCvs');
 		return res.json(cvs);
