@@ -92,8 +92,7 @@ app.get('/api/get-onsite-vacancies', async (req, res) => {
 	}
 });
 
-// TODO check
-app.get('/api/get-remote-vacancies', async (req, res) => {
+app.get('/api/get-remote-vacancies', authenticateToken, async (req, res) => {
 	try {
 		const vacancies = await collectionOfRemotes.find({}).toArray();
 		return res.json(vacancies);
@@ -129,16 +128,8 @@ app.get('/api/get-cvs', authenticateToken, async (req, res) => {
 		// returns collection.length
 		// const size = await collectionOfCvs.countDocuments();
 		// return res.json(size);
-
-		// const cvs = await collectionOfCvs.findOne('collectionOfCvs'); // возвращает только одну ПОЧЕМУУУ??????
-		// return res.json(cvs);
-		const options = {
-			sort: {
-				title: 1
-			}
-		}
-		const cvs = await collectionOfCvs.indexes(options);
-		return res.json(cvs);
+		const c = await collectionOfCvs.find({}).toArray();
+		return res.json(c);
 	} catch (err) {
 		return res.status(500).send('Error reading data');
 	}
