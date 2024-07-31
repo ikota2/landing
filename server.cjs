@@ -129,8 +129,16 @@ app.get('/api/get-cvs', authenticateToken, async (req, res) => {
 		// returns collection.length
 		// const size = await collectionOfCvs.countDocuments();
 		// return res.json(size);
-		const cvs = await collectionOfCvs.findOne('collectionOfCvs');
+
+		// const cvs = await collectionOfCvs.findOne('collectionOfCvs'); // возвращает только одну ПОЧЕМУУУ??????
+		// return res.json(cvs);
+		const cvs = await collectionOfCvs;
 		return res.json(cvs);
+		// const options = {
+		// 	sort: {
+		// 		title: 1
+		// 	}
+		// }
 	} catch (err) {
 		return res.status(500).send('Error reading data');
 	}
