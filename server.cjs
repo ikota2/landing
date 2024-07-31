@@ -229,12 +229,12 @@ app.delete('/api/remove-remote-vacancy/:id', authenticateToken, async (req, res)
 });
 
 app.put('/api/edit-onsite-vacancy/:id', authenticateToken, async (req, res) => {
-	const { _id } = req.params;
+	const { id } = req.params;
 	const { username, responsibilities, requirements, conditions, salary, title } = req.body;
 
 	try {
 		await collectionOfOnSites.updateOne(
-			{ _id },
+			{ id },
 			{ $set: { username, responsibilities, requirements, conditions, salary, title } }
 		);
 		return res.status(200).send('On-site vacancy updated successfully');
@@ -243,13 +243,13 @@ app.put('/api/edit-onsite-vacancy/:id', authenticateToken, async (req, res) => {
 	}
 });
 
-app.put('/api/edit-remote-vacancy/:id', authenticateToken, async (req, res) => {
-	const { _id } = req.params;
+app.post('/api/edit-remote-vacancy/:id', authenticateToken, async (req, res) => {
+	const { id } = req.params;
 	const { username, responsibilities, requirements, conditions, salary, title } = req.body;
 
 	try {
 		await collectionOfRemotes.updateOne(
-			{ _id },
+			{ id },
 			{ $set: { username, responsibilities, requirements, conditions, salary, title } }
 		);
 		return res.status(200).send('Remote vacancy updated successfully');
