@@ -228,7 +228,7 @@ app.delete('/api/remove-remote-vacancy/:id', authenticateToken, async (req, res)
 	}
 });
 
-app.put('/api/edit-onsite-vacancy/:id', authenticateToken, async (req, res) => {
+app.post('/api/edit-onsite-vacancy/:id', authenticateToken, async (req, res) => {
 	const { id } = req.params;
 	const { username, responsibilities, requirements, conditions, salary, title } = req.body;
 
