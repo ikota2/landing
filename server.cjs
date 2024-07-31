@@ -66,7 +66,6 @@ function authenticateToken(req, res, next) {
 app.post('/api/send-cv', async (req, res) => {
 	const { name, email, telegram, experience, position } = req.body;
 	const newCv = {
-		id: Date.now().toString(),
 		name,
 		email,
 		telegram,
@@ -152,9 +151,8 @@ app.delete('/api/delete-cv/:id', async (req, res) => {
 });
 
 app.post('/api/create-onsite-vacancy', authenticateToken, async (req, res) => {
-	const { id, username, responsibilities, requirements, conditions, salary, title } = req.body;
+	const { username, responsibilities, requirements, conditions, salary, title } = req.body;
 	const newVacancy = {
-		id,
 		username,
 		salary,
 		title,
@@ -172,9 +170,8 @@ app.post('/api/create-onsite-vacancy', authenticateToken, async (req, res) => {
 });
 
 app.post('/api/create-remote-vacancy', authenticateToken, async (req, res) => {
-	const { id, username, responsibilities, requirements, conditions, salary, title } = req.body;
+	const { username, responsibilities, requirements, conditions, salary, title } = req.body;
 	const newVacancy = {
-		id,
 		username,
 		salary,
 		title,
@@ -232,12 +229,12 @@ app.delete('/api/remove-remote-vacancy/:id', authenticateToken, async (req, res)
 });
 
 app.post('/api/edit-onsite-vacancy/:id', authenticateToken, async (req, res) => {
-	const { id } = req.params;
+	const { _id } = req.params;
 	const { username, responsibilities, requirements, conditions, salary, title } = req.body;
 
 	try {
 		await collectionOfOnSites.updateOne(
-			{ id },
+			{ _id },
 			{ $set: { username, responsibilities, requirements, conditions, salary, title } }
 		);
 		return res.status(200).send('On-site vacancy updated successfully');
@@ -247,12 +244,12 @@ app.post('/api/edit-onsite-vacancy/:id', authenticateToken, async (req, res) => 
 });
 
 app.post('/api/edit-remote-vacancy/:id', authenticateToken, async (req, res) => {
-	const { id } = req.params;
+	const { _id } = req.params;
 	const { username, responsibilities, requirements, conditions, salary, title } = req.body;
 
 	try {
 		await collectionOfRemotes.updateOne(
-			{ id },
+			{ _id },
 			{ $set: { username, responsibilities, requirements, conditions, salary, title } }
 		);
 		return res.status(200).send('Remote vacancy updated successfully');
