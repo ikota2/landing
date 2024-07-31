@@ -153,6 +153,7 @@ app.delete('/api/delete-cv/:id', async (req, res) => {
 app.post('/api/create-onsite-vacancy', authenticateToken, async (req, res) => {
 	const { username, responsibilities, requirements, conditions, salary, title } = req.body;
 	const newVacancy = {
+		id: Date.now().toString(),
 		username,
 		salary,
 		title,
@@ -172,6 +173,7 @@ app.post('/api/create-onsite-vacancy', authenticateToken, async (req, res) => {
 app.post('/api/create-remote-vacancy', authenticateToken, async (req, res) => {
 	const { username, responsibilities, requirements, conditions, salary, title } = req.body;
 	const newVacancy = {
+		id: Date.now().toString(),
 		username,
 		salary,
 		title,
@@ -235,7 +237,7 @@ app.post('/api/edit-onsite-vacancy/:id', authenticateToken, async (req, res) => 
 	try {
 		await collectionOfOnSites.updateOne(
 			{ id },
-			{ $set: { username, responsibilities, requirements, conditions, salary, title } }
+			{ $set: { username, responsibilities, requirements, conditions, salary, title, id } }
 		);
 		return res.status(200).send('On-site vacancy updated successfully');
 	} catch (err) {
