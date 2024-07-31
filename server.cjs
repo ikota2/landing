@@ -237,7 +237,7 @@ app.post('/api/edit-onsite-vacancy/:id', authenticateToken, async (req, res) => 
 	try {
 		await collectionOfOnSites.updateOne(
 			{ id },
-			{ $set: { username, responsibilities, requirements, conditions, salary, title, id } }
+			{ $set: { username, responsibilities, requirements, conditions, salary, title } }
 		);
 		return res.status(200).send('On-site vacancy updated successfully');
 	} catch (err) {
