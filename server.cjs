@@ -132,13 +132,13 @@ app.get('/api/get-cvs', authenticateToken, async (req, res) => {
 
 		// const cvs = await collectionOfCvs.findOne('collectionOfCvs'); // возвращает только одну ПОЧЕМУУУ??????
 		// return res.json(cvs);
-		const cvs = await collectionOfCvs;
+		const options = {
+			sort: {
+				title: 1
+			}
+		}
+		const cvs = await collectionOfCvs.indexes(options);
 		return res.json(cvs);
-		// const options = {
-		// 	sort: {
-		// 		title: 1
-		// 	}
-		// }
 	} catch (err) {
 		return res.status(500).send('Error reading data');
 	}
