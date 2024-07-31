@@ -82,8 +82,7 @@ app.post('/api/send-cv', async (req, res) => {
 	}
 });
 
-// TODO check
-app.get('/api/get-onsite-vacancies', async (req, res) => {
+app.get('/api/get-onsite-vacancies', authenticateToken, async (req, res) => {
 	try {
 		const vacancies = await collectionOfOnSites.find({}).toArray();
 		return res.json(vacancies);
@@ -125,15 +124,21 @@ app.post('/api/login', async (req, res) => {
 
 app.get('/api/get-cvs', authenticateToken, async (req, res) => {
 	try {
-		// returns collection.length
-		// const size = await collectionOfCvs.countDocuments();
-		// return res.json(size);
 		const c = await collectionOfCvs.find({}).toArray();
 		return res.json(c);
 	} catch (err) {
 		return res.status(500).send('Error reading data');
 	}
 });
+
+app.get('/api/get-cv-quantity', authenticateToken, async (req, res) => {
+	try {
+		const size = await collectionOfCvs.countDocuments();
+		return res.json(size);
+	} catch (err) {
+		return res.status(500).send('Error reading data');
+	}
+})
 
 app.delete('/api/delete-cv/:id', async (req, res) => {
 	const { id } = req.params;
@@ -147,14 +152,15 @@ app.delete('/api/delete-cv/:id', async (req, res) => {
 });
 
 app.post('/api/create-onsite-vacancy', authenticateToken, async (req, res) => {
-	const { id, username, responsibilities, requirements, conditions, salary } = req.body;
+	const { id, username, responsibilities, requirements, conditions, salary, title } = req.body;
 	const newVacancy = {
 		id,
 		username,
+		salary,
+		title,
 		responsibilities,
 		requirements,
 		conditions,
-		salary
 	};
 
 	try {
@@ -166,14 +172,15 @@ app.post('/api/create-onsite-vacancy', authenticateToken, async (req, res) => {
 });
 
 app.post('/api/create-remote-vacancy', authenticateToken, async (req, res) => {
-	const { id, username, responsibilities, requirements, conditions, salary } = req.body;
+	const { id, username, responsibilities, requirements, conditions, salary, title } = req.body;
 	const newVacancy = {
 		id,
 		username,
+		salary,
+		title,
 		responsibilities,
 		requirements,
 		conditions,
-		salary
 	};
 
 	try {
@@ -226,12 +233,12 @@ app.delete('/api/remove-remote-vacancy/:id', authenticateToken, async (req, res)
 
 app.post('/api/edit-onsite-vacancy/:id', authenticateToken, async (req, res) => {
 	const { id } = req.params;
-	const { username, responsibilities, requirements, conditions, salary } = req.body;
+	const { username, responsibilities, requirements, conditions, salary, title } = req.body;
 
 	try {
 		await collectionOfOnSites.updateOne(
 			{ id },
-			{ $set: { username, responsibilities, requirements, conditions, salary: salary || null } }
+			{ $set: { username, responsibilities, requirements, conditions, salary, title } }
 		);
 		return res.status(200).send('On-site vacancy updated successfully');
 	} catch (err) {
@@ -241,12 +248,12 @@ app.post('/api/edit-onsite-vacancy/:id', authenticateToken, async (req, res) => 
 
 app.post('/api/edit-remote-vacancy/:id', authenticateToken, async (req, res) => {
 	const { id } = req.params;
-	const { username, responsibilities, requirements, conditions, salary } = req.body;
+	const { username, responsibilities, requirements, conditions, salary, title } = req.body;
 
 	try {
 		await collectionOfRemotes.updateOne(
 			{ id },
-			{ $set: { username, responsibilities, requirements, conditions, salary: salary || null } }
+			{ $set: { username, responsibilities, requirements, conditions, salary, title } }
 		);
 		return res.status(200).send('Remote vacancy updated successfully');
 	} catch (err) {
