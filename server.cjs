@@ -153,6 +153,7 @@ app.delete('/api/delete-cv/:id', async (req, res) => {
 app.post('/api/create-onsite-vacancy', authenticateToken, async (req, res) => {
 	const { username, responsibilities, requirements, conditions, salary, title } = req.body;
 	const newVacancy = {
+		id: Date.now().toString(),
 		username,
 		salary,
 		title,
@@ -172,6 +173,7 @@ app.post('/api/create-onsite-vacancy', authenticateToken, async (req, res) => {
 app.post('/api/create-remote-vacancy', authenticateToken, async (req, res) => {
 	const { username, responsibilities, requirements, conditions, salary, title } = req.body;
 	const newVacancy = {
+		id: Date.now().toString(),
 		username,
 		salary,
 		title,
@@ -228,7 +230,7 @@ app.delete('/api/remove-remote-vacancy/:id', authenticateToken, async (req, res)
 	}
 });
 
-app.put('/api/edit-onsite-vacancy/:id', authenticateToken, async (req, res) => {
+app.post('/api/edit-onsite-vacancy/:id', authenticateToken, async (req, res) => {
 	const { id } = req.params;
 	const { username, responsibilities, requirements, conditions, salary, title } = req.body;
 
