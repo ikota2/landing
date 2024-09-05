@@ -121,6 +121,31 @@ app.post('/api/login', async (req, res) => {
 	}
 });
 
+app.get('/api/validate-token', authenticateToken, (req, res) => {
+	const authHeader = req.headers['authorization'];
+	const token = authHeader && authHeader.split(' ')[1];
+
+	if (!token) {
+		return res.status(401).json({ valid: false, message: 'No token provided' });
+	}
+
+	jwt.verify(token, jwtSecret, (err, decoded) => {
+		if (err) {
+			if (err.name === 'TokenExpiredError') {
+				return res.status(401).json({ valid: false, message: 'Token expired' });
+			}
+			return res.status(403).json({ valid: false, message: 'Invalid token' });
+		}
+
+		return res.status(200).json({
+			valid: true,
+			user: {
+				userId: decoded.userId
+			}
+		});
+	});
+});
+
 app.get('/api/get-cvs', authenticateToken, async (req, res) => {
 	try {
 		const c = await collectionOfCvs.find({}).toArray();
