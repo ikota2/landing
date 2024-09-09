@@ -82,7 +82,7 @@ app.post('/api/send-cv', async (req, res) => {
 	}
 });
 
-app.get('/api/get-onsite-vacancies', authenticateToken, async (req, res) => {
+app.get('/api/get-onsite-vacancies', async (req, res) => {
 	try {
 		const vacancies = await collectionOfOnSites.find({}).toArray();
 		return res.json(vacancies);
@@ -91,7 +91,7 @@ app.get('/api/get-onsite-vacancies', authenticateToken, async (req, res) => {
 	}
 });
 
-app.get('/api/get-remote-vacancies', authenticateToken, async (req, res) => {
+app.get('/api/get-remote-vacancies', async (req, res) => {
 	try {
 		const vacancies = await collectionOfRemotes.find({}).toArray();
 		return res.json(vacancies);
