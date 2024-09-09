@@ -2,20 +2,20 @@
 	import Dropdown from './Dropdown.svelte';
     import DropdownItem from './DropdownItem.svelte';
 
-    export let title;
+    export let sectionTitle;
     export let jobs = [];
 </script>
 
 <div class="job">
-    <h2>{title}</h2>
-    {#each jobs as { name, responsibilities, requirements, conditions, salary }}
-        <Dropdown title={name}>
+    <h2>{sectionTitle}</h2>
+    {#each jobs as { title, responsibilities, requirements, conditions, salary, username }}
+        <Dropdown title={title}>
             <DropdownItem
-                    name={name}
-                    responsibilities={responsibilities}
-                    requirements={requirements}
-                    conditions={conditions}
-                    salary={salary}
+                {responsibilities}
+                {requirements}
+                {conditions}
+                {salary}
+                {username}
             />
         </Dropdown>
     {/each}

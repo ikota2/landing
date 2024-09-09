@@ -1,13 +1,16 @@
 <script>
+  import { onMount } from 'svelte';
   import Features from './lib/Features.svelte';
   import Navigation from './lib/Navigation.svelte';
-  import {jobs} from './data/index.js';
   import Job from './lib/Job.svelte';
   import SendCv from './lib/SendCv.svelte';
   import logo2 from './assets/juvelogo2.svg';
 
   let activeSection = 'info';
-  const { remoteJobs, onsiteJobs } = jobs;
+  let onsiteJobs = [];
+  let remoteJobs = [];
+  let isLoading = true;
+
   function scrollToSection(sectionId) {
     activeSection = sectionId;
     const targetElement = document.getElementById(sectionId);
@@ -15,6 +18,21 @@
       targetElement.scrollIntoView({ behavior: 'smooth' });
     }
   }
+
+  onMount(async () => {
+    try {
+      const [onsiteResponse, remoteResponse] = await Promise.all([
+        fetch('https://landing-rose-beta.vercel.app/api/get-onsite-vacancies'),
+        fetch('https://landing-rose-beta.vercel.app/api/get-remote-vacancies')
+      ]);
+      onsiteJobs = await onsiteResponse.json();
+      remoteJobs = await remoteResponse.json();
+    } catch (error) {
+      console.error('Error fetching jobs:', error);
+    } finally {
+      isLoading = false;
+    }
+  });
 </script>
 
 <body>
@@ -45,10 +63,18 @@
         <Features />
       </section>
       <section id="remote" class="jobs">
-        <Job title="Удаленная работа" jobs={remoteJobs} />
+        {#if isLoading}
+          <div class="loading">Loading...</div>
+        {:else}
+          <Job sectionTitle="Удаленная работа" jobs={remoteJobs} />
+        {/if}
       </section>
       <section id="onsite" class="jobs">
-        <Job title="Работа на месте" jobs={onsiteJobs} />
+        {#if isLoading}
+          <div class="loading">Loading...</div>
+        {:else}
+          <Job sectionTitle="Работа на месте" jobs={onsiteJobs} />
+        {/if}
       </section>
       <section id="contacts">
           <div class="contact">
@@ -103,6 +129,7 @@
   main {
     margin-top: 3rem;
   }
+
 	.title {
 			font-weight: 700;
     }
@@ -123,6 +150,7 @@
     font-size: 1.5rem;
     color: #333;
   }
+
   @media (max-width: 1024px) and (min-width: 769px) {
     .info {
       font-size: 1rem;
