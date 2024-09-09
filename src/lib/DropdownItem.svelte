@@ -1,17 +1,20 @@
 <script>
-    import {jobs} from '../stores/jobs.js';
-
     export let responsibilities;
     export let requirements;
     export let conditions;
     export let salary;
+	export let username;
 
+    let telegramLink;
+    $: telegramLink = username ? `https://t.me/${username.slice(1)}` : '';
     function goToTelegram() {
-        window.open("https://t.me/bloommmannn", "_blank");
+      if (telegramLink) {
+         window.open(telegramLink, "_blank");
+      }
     }
-		function chooseJob() {
-			document.getElementById('contacts').scrollIntoView({ behavior: 'smooth' });
-		}
+    function chooseJob() {
+        document.getElementById('contacts').scrollIntoView({ behavior: 'smooth' });
+    }
 </script>
 
 <div class="dropdown-item">
@@ -92,14 +95,6 @@
     }
     .btn:hover {
         background-color: #f0f0f0;
-    }
-    .btn.active {
-        background-color: #b74c7d;
-        color: white;
-        border-color: #b74c7d;
-    }
-    .btn.active:hover {
-        background-color: #9e426e;
     }
     .btn:focus {
         outline: 2px solid #96e9c6;
