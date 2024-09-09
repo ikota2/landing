@@ -1,10 +1,9 @@
 <script>
-	import { apiBaseUrl } from '../config';
+    import { get } from 'svelte/store';
     import Input from './Input.svelte';
     import Textarea from './Textarea.svelte';
+	import { apiBaseUrl } from '../config';
     import { jobs } from '../stores/jobs';
-    import {get} from 'svelte/store';
-    import { onMount } from 'svelte';
 
     let jobList = [];
 	let name = '';
@@ -13,16 +12,16 @@
 	let position = '';
 	let experience = '';
 
-    onMount(() => {
-        jobList = get(jobs).filter(job => job.isChosen).map(job => job.engName);
-        if (jobList.length) {
-            position = jobList[0];
-        }
-    });
 	const handleSubmit = async (event) => {
 		event.preventDefault();
-		const formData = { name, email, telegram, position, experience };
-
+        const selectedJob = get(jobs).find(job => job.engName === position);
+        const formData = {
+            name,
+            email,
+            telegram,
+            position: selectedJob ? selectedJob.name : '',
+            experience
+        };
 		try {
 			const response = await fetch(`${apiBaseUrl}/api/send-cv`, {
 				method: 'POST',
@@ -41,7 +40,7 @@
 			alert('Error submitting form');
 		}
 	};
-		console.log(get(jobs));
+    // console.log(get(jobs));
 
 </script>
 
