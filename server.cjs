@@ -64,8 +64,9 @@ function authenticateToken(req, res, next) {
 }
 
 app.post('/api/send-cv', async (req, res) => {
-	const { name, email, telegram, experience, position } = req.body;
+	const { name, email, telegram, experience, position, } = req.body;
 	const newCv = {
+		id: Date.now().toString(),
 		name,
 		email,
 		telegram,
