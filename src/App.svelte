@@ -10,6 +10,7 @@
   let onsiteJobs = [];
   let remoteJobs = [];
   let isLoading = true;
+  const url = process.env.VITE_API_BASE_URL;
 
   function scrollToSection(sectionId) {
     activeSection = sectionId;
@@ -22,8 +23,8 @@
   onMount(async () => {
     try {
       const [onsiteResponse, remoteResponse] = await Promise.all([
-        fetch('https://landing-rose-beta.vercel.app/api/get-onsite-vacancies'),
-        fetch('https://landing-rose-beta.vercel.app/api/get-remote-vacancies')
+        fetch(`${url}/api/get-onsite-vacancies`),
+        fetch(`${url}/api/get-remote-vacancies`),
       ]);
       onsiteJobs = await onsiteResponse.json();
       remoteJobs = await remoteResponse.json();
