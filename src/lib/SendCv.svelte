@@ -1,20 +1,19 @@
 <script>
-    import { get } from 'svelte/store';
     import Input from './Input.svelte';
     import Textarea from './Textarea.svelte';
 	import { apiBaseUrl } from '../config';
-    import { jobs } from '../stores/jobs';
 
-    let jobList = [];
+	export let jobs = [];
 	let name = '';
 	let email = '';
 	let telegram = '';
 	let position = '';
 	let experience = '';
+    $: jobsList = jobs.filter(job => job.title);
 
 	const handleSubmit = async (event) => {
 		event.preventDefault();
-        const selectedJob = get(jobs).find(job => job.engName === position);
+        const selectedJob = jobs.find(job => job.engName === position);
         const formData = {
             name,
             email,
@@ -40,16 +39,14 @@
 			alert('Error submitting form');
 		}
 	};
-    // console.log(get(jobs));
-
 </script>
 
 <div class="form-container">
     <form on:submit|preventDefault={handleSubmit}>
         <select bind:value={position} class="custom-select" required>
             <option value="" disabled selected>Выберите должность</option>
-            {#each get(jobs) as job}
-                <option value={job.engName}>{job.name}</option>
+            {#each jobs as job}
+                <option value={job.title}>{job.title}</option>
             {/each}
         </select>
         <Input bind:value={name} placeholder={'Имя'} />
