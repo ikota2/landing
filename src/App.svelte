@@ -5,10 +5,13 @@
   import Job from './lib/Job.svelte';
   import SendCv from './lib/SendCv.svelte';
   import logo2 from './assets/juvelogo2.svg';
+  import { apiBaseUrl } from './config';
+
 
   let activeSection = 'info';
   let onsiteJobs = [];
   let remoteJobs = [];
+  let filteredJobs = [];
   let isLoading = true;
 
   function scrollToSection(sectionId) {
@@ -22,11 +25,12 @@
   onMount(async () => {
     try {
       const [onsiteResponse, remoteResponse] = await Promise.all([
-        fetch('https://landing-rose-beta.vercel.app/api/get-onsite-vacancies'),
-        fetch('https://landing-rose-beta.vercel.app/api/get-remote-vacancies')
+        fetch(`${apiBaseUrl}/api/get-onsite-vacancies`),
+        fetch(`${apiBaseUrl}/api/get-remote-vacancies`),
       ]);
       onsiteJobs = await onsiteResponse.json();
       remoteJobs = await remoteResponse.json();
+      filteredJobs = [...remoteJobs, ...onsiteJobs];
     } catch (error) {
       console.error('Error fetching jobs:', error);
     } finally {
@@ -79,7 +83,7 @@
       <section id="contacts">
           <div class="contact">
              <h2>Отправить резюме</h2>
-            <SendCv />
+            <SendCv jobs={filteredJobs} />
           </div>
       </section>
     </main>
