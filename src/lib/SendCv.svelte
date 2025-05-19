@@ -9,7 +9,7 @@
 	let telegram = '';
 	let position = '';
 	let experience = '';
-    $: jobsList = jobs.filter(job => job?.title);
+    $: jobsList = jobs.filter(job => job.title);
 
 	const handleSubmit = async (event) => {
 		event.preventDefault();
@@ -45,7 +45,7 @@
     <form on:submit|preventDefault={handleSubmit}>
         <select bind:value={position} class="custom-select" required>
             <option value="" disabled selected>Выберите должность</option>
-            {#each jobsList as job}
+            {#each jobs as job}
                 <option value={job.title}>{job.title}</option>
             {/each}
         </select>
