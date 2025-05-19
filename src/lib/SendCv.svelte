@@ -9,16 +9,15 @@
 	let telegram = '';
 	let position = '';
 	let experience = '';
-    $: jobsList = jobs.filter(job => job.title);
+    $: jobsList = jobs.filter(job => job?.title);
 
 	const handleSubmit = async (event) => {
 		event.preventDefault();
-        const selectedJob = jobs.find(job => job.engName === position);
         const formData = {
             name,
             email,
             telegram,
-            position: selectedJob ? selectedJob.name : '',
+            position,
             experience
         };
 		try {
@@ -39,13 +38,14 @@
 			alert('Error submitting form');
 		}
 	};
+	console.log(jobs)
 </script>
 
 <div class="form-container">
     <form on:submit|preventDefault={handleSubmit}>
         <select bind:value={position} class="custom-select" required>
             <option value="" disabled selected>Выберите должность</option>
-            {#each jobs as job}
+            {#each jobsList as job}
                 <option value={job.title}>{job.title}</option>
             {/each}
         </select>
